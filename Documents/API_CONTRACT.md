@@ -22,6 +22,10 @@ List of all composers the game can ask about — used to power the composer sear
 ]
 ```
 
+`era` and `regionId` here describe **the composer, not the individual work**, and they are the
+authoritative answer key for those two scoring axes. A Chopin prelude written in Mallorca still
+scores as `eastern-europe`, because the player is being asked to identify a composer.
+
 ### `GET /api/regions`
 ```json
 [
@@ -58,15 +62,48 @@ Response:
 {
   "sessionId": "sess_abc123",
   "rounds": [
-    { "roundId": "r1", "imageUrl": "https://.../excerpts/r1.png" },
-    { "roundId": "r2", "imageUrl": "https://.../excerpts/r2.png" }
+    {
+      "roundId": "r1",
+      "caseNumber": 17,
+      "imageUrl": "https://.../excerpts/r1.png",
+      "clues": [
+        {
+          "id": "r1c1",
+          "order": 1,
+          "type": "contemporary-account",
+          "label": "A first-hand description from a contemporary",
+          "text": "He played with a rubato that no other pianist could imitate...",
+          "attribution": "Wilhelm von Lenz, 1842"
+        },
+        {
+          "id": "r1c2",
+          "order": 2,
+          "type": "historical-event",
+          "label": "A historical event connected to the composer",
+          "text": "The winter of 1838–39 was spent in an abandoned monastery on Mallorca."
+        }
+      ]
+    },
+    { "roundId": "r2", "caseNumber": 18, "imageUrl": "https://.../excerpts/r2.png", "clues": [] }
   ]
 }
 ```
 Notes:
-- `imageUrl` points to an already-cropped PNG/JPG of the sheet music excerpt (backend owns
-  cropping/rendering from the source PDF — frontend just displays an image).
-- No answer data should be included here — only reveal it after a guess is submitted.
+- `imageUrl` points to an already-cropped PNG/JPG of the manuscript/score excerpt (backend owns
+  cropping/rendering from the source PDF — frontend just displays an image). **This is the only
+  image in a round.** All other evidence is text.
+- `clues` is the round's remaining evidence, already sorted by `order`. Send them all upfront and
+  let the frontend reveal them one at a time — clue text never contains answer data, so nothing
+  leaks by shipping them early, and this avoids a per-clue round trip mid-game.
+- `type` is a display hint for the evidence card, one of: `contemporary-account`, `letter`,
+  `criticism`, `biographical`, `place`, `relationship`, `musical-characteristic`,
+  `historical-event`, `anecdote`. Treat unknown values as generic text rather than erroring.
+- `label` is a short human-readable caption for the evidence card ("Evidence 02" numbering is
+  frontend-owned, derived from `order`). `attribution` is optional (source/author/date).
+- `caseNumber` is cosmetic, for the "CASE #017" framing.
+- No answer data is included here — the composer is only revealed after a guess is submitted.
+  Clue text must never name the composer, and `imageUrl` paths must be opaque (`/media/r1.png`,
+  never `/chopin-nocturne-op9.png`).
 
 ---
 
@@ -88,6 +125,7 @@ Response:
   "correct": {
     "composerId": "chopin-f",
     "composerName": "Frédéric Chopin",
+    "workTitle": "Prelude in D-flat major, Op. 28 No. 15",
     "era": "romantic",
     "yearComposed": 1838,
     "regionId": "eastern-europe",
@@ -100,10 +138,25 @@ Response:
     "instrumentation": { "points": 500, "maxPoints": 500, "correct": true }
   },
   "roundScore": 1980,
-  "maxRoundScore": 2000
+  "maxRoundScore": 2000,
+  "explanation": {
+    "summary": "Every piece of evidence points to Chopin in the years around 1838.",
+    "points": [
+      { "clueId": null, "text": "The manuscript hand — cramped beaming, rightward-slanting stems — matches known Chopin autographs of the late 1830s." },
+      { "clueId": "r1c1", "text": "Lenz is describing Chopin's characteristic rubato, in which the left hand keeps strict time against a freely inflected right hand." },
+      { "clueId": "r1c2", "text": "The Mallorca winter is when the Op. 28 Preludes were completed, at the Valldemossa charterhouse." }
+    ]
+  }
 }
 ```
 Notes:
+- `explanation` is the educational payoff of the round: it is returned on every guess, right or
+  wrong, and should be rendered on the reveal screen. Each entry in `points` ties back to a clue
+  via `clueId` so the UI can show the reasoning next to the evidence it came from; `clueId` is
+  `null` for points about the manuscript image itself.
+- `workTitle` is what the excerpt actually is, for the reveal screen.
+- `era` and `regionId` in `correct` describe the composer (see §1). `yearComposed` is the year of
+  this particular work, and is what `guessedYear` is scored against.
 - **Backend owns scoring**, not the frontend. This keeps scoring consistent/tamper-resistant and
   lets scoring rules evolve without a frontend redeploy. Frontend just renders whatever breakdown
   comes back.
@@ -136,16 +189,29 @@ Standard shape for all error responses:
 ```json
 { "error": "SESSION_NOT_FOUND", "message": "No session with id sess_abc123" }
 ```
-Expected codes: `SESSION_NOT_FOUND`, `ROUND_NOT_FOUND`, `ROUND_ALREADY_GUESSED`, `VALIDATION_ERROR`.
+Expected codes: `SESSION_NOT_FOUND`, `ROUND_NOT_FOUND`, `ROUND_ALREADY_GUESSED`, `VALIDATION_ERROR`,
+mapped to HTTP 404, 404, 409 and 400 respectively. Frontend should key off the `error` string
+rather than the status code.
 
 ---
 
+## Resolved
+
+- **Rounds are sent upfront**, images and clues together. No answer data is exposed until guess
+  time, so nothing leaks; this also lets the frontend prefetch images so the reveal has no stutter.
+- **Sessions are anonymous and in-memory** for now. No accounts, no leaderboards; sessions do not
+  survive a backend restart.
+- **Excerpt images are pre-cropped offline** and served as static backend assets. No runtime PDF
+  rendering. Sources are public-domain (IMSLP).
+- **Region and era are composer-level**, not work-level (see §1).
+
 ## Open questions for backend
 
-- Do rounds need to be fetched lazily one at a time instead of all upfront (e.g. to avoid leaking
-  future answers or to randomize per-request)? Current contract sends all round image URLs at
-  `/game/start`, since no answer data is exposed until guess time — should be safe either way, but
-  lazy fetch is easy to switch to if preferred.
-- Is a persistent session/user id needed for leaderboards, or is this anonymous/single-play only
-  for now?
-- Where do source PDFs live and does cropping happen at upload time or on-demand per round?
+- Exact scoring curve for `guessedYear`. Working assumption unless told otherwise: full 500 within
+  ±5 years, decaying to 0 at ±100 years. Composer/region/instrumentation are all-or-nothing.
+- `difficulty` on `/game/start` has no defined effect yet — backend accepts and ignores it.
+- Should `/summary` also return each round's correct composer, for an end-of-game recap screen?
+  It currently returns scores only.
+- Some works resist a single `instrumentationId` (is a piano concerto `solo-piano` or
+  `orchestral`?). Backend will pick one canonical category per work; flag if the UI needs to
+  accept either.
