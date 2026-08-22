@@ -153,7 +153,7 @@ export function GuessPanel({ composers, regions, instrumentationCategories, onSu
         onClick={skipCurrent}
         className="self-start rounded-sm border border-muted/40 px-3 py-1.5 text-sm uppercase tracking-wide text-muted hover:border-gold hover:text-gold"
       >
-        Skip this question — take 200 points for honesty
+        Skip this question — take 100 points for honesty
       </button>
     </div>
   )

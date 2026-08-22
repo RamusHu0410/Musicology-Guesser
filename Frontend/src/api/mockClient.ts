@@ -24,10 +24,10 @@ const REGION_MAX_DISTANCE = 260
 
 // Skipping a question honestly (rather than guessing blind) always earns this flat bonus,
 // regardless of category — better than a wrong guess, worse than a right one.
-const HONESTY_BONUS_POINTS = 200
+const HONESTY_BONUS_POINTS = 100
 
 // Revealing a clue costs points off the round — evidence is a paid hint, not a freebie.
-const EVIDENCE_COST_POINTS = 100
+const EVIDENCE_COST_POINTS = 20
 
 function scoreExactMatch(guessValue: string | null, correctValue: string, maxPoints: number): ScoreEntry {
   if (guessValue === null) {
@@ -139,8 +139,9 @@ export function createMockApiClient(): ApiClient {
           workTitle: excerpt.workTitle,
           era: composer.era,
           yearComposed: excerpt.yearComposed,
-          regionId: composer.regionId,
+          regionId: composer.regionId ?? '',
           instrumentationId: excerpt.instrumentationId,
+          answerPoint: COMPOSER_MAP_POINTS[composer.id] ?? null,
         },
         scoreBreakdown: { composer: composerScore, era, region, instrumentation },
         roundScore,

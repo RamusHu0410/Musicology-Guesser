@@ -21,12 +21,12 @@ export function EvidencePanel({ clues, revealedCount, onReveal }: EvidencePanelP
             onClick={onReveal}
             className="rounded-sm border border-gold/30 px-3 py-1.5 text-sm text-ivory hover:border-gold/60"
           >
-            Use evidence — take a clue (−100 pts) ({revealedCount}/{clues.length})
+            Use evidence — take a clue (−20 pts) ({revealedCount}/{clues.length})
           </button>
         )}
       </div>
       {revealed.length === 0 ? (
-        <p className="text-sm text-muted">No evidence used yet — using a clue costs 100 points off the round.</p>
+        <p className="text-sm text-muted">No evidence used yet — using a clue costs 20 points off the round.</p>
       ) : (
         <div className="flex flex-col gap-2">
           {revealed.map((clue) => (

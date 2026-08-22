@@ -14,6 +14,7 @@ export function RoundScreen() {
   const rounds = useGameStore((s) => s.rounds)
   const currentRoundIndex = useGameStore((s) => s.currentRoundIndex)
   const submitGuess = useGameStore((s) => s.submitGuess)
+  const reset = useGameStore((s) => s.reset)
   const composers = useReferenceStore((s) => s.composers)
   const regions = useReferenceStore((s) => s.regions)
   const instrumentationCategories = useReferenceStore((s) => s.instrumentationCategories)
@@ -36,9 +37,23 @@ export function RoundScreen() {
 
   const revealedCount = revealState.roundId === round.roundId ? revealState.revealedCount : 0
 
+  function quit() {
+    if (window.confirm('Quit this game and lose your progress?')) {
+      reset()
+      navigate('/')
+    }
+  }
+
   return (
     <main className="mx-auto flex max-w-5xl flex-col gap-6 p-6">
       <div className="flex items-center justify-between text-base text-ivory">
+        <button
+          type="button"
+          onClick={quit}
+          className="rounded-sm border border-muted/40 px-3 py-1 text-sm uppercase tracking-wide text-muted hover:border-maroon hover:text-maroon"
+        >
+          Quit
+        </button>
         <span>
           Round {currentRoundIndex + 1} of {rounds.length} · Case #{String(round.caseNumber).padStart(3, '0')}
         </span>

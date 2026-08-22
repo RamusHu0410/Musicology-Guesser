@@ -63,7 +63,7 @@ describe('mock API client', () => {
       cluesRevealed: 0,
     })
 
-    expect(result.roundScore).toBe(800) // 200 honesty bonus x 4 categories
+    expect(result.roundScore).toBe(400) // 100 honesty bonus x 4 categories
     expect(Object.values(result.scoreBreakdown).every((entry) => entry.skipped)).toBe(true)
   })
 
@@ -104,7 +104,7 @@ describe('mock API client', () => {
     expect(result.scoreBreakdown.region.points).toBeLessThan(500)
   })
 
-  it('deducts 100 points per clue used from the round score', async () => {
+  it('deducts 20 points per clue used from the round score', async () => {
     const session = await client.startGame(1)
     const round = session.rounds[0]
 
@@ -116,7 +116,7 @@ describe('mock API client', () => {
       cluesRevealed: 2,
     })
 
-    expect(result.evidencePenalty).toBe(200)
+    expect(result.evidencePenalty).toBe(40)
     expect(result.roundScore).toBeGreaterThanOrEqual(0)
   })
 

@@ -18,7 +18,9 @@ export interface Composer {
   id: string
   name: string
   era: EraId
-  regionId: string
+  // Absent from the real backend's composer list — a work's region is per-case, not per-composer.
+  // Only the mock client (whose composers are fixed to one home city) sets this.
+  regionId?: string
 }
 
 export interface Region {
@@ -95,6 +97,10 @@ export interface RoundResult {
     yearComposed: number
     regionId: string
     instrumentationId: string
+    // Where the answer sits on the map, in EuropeMap's coordinate space — each ApiClient
+    // implementation computes this itself (mock via a fixed lookup, the real client by
+    // projecting the backend's country lat/lon), so the reveal screen never has to know which.
+    answerPoint: MapPoint | null
   }
   scoreBreakdown: {
     composer: ScoreEntry
