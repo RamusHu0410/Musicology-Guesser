@@ -4,7 +4,7 @@
   "composerId": "chopin-f",
   "workTitle": "Prelude in D-flat major, Op. 28 No. 15",
   "yearComposed": 1839,
-  "cityId": "valldemossa",
+  "countryId": "spain",
   "instrumentationId": "solo-piano",
   "manuscript": "case-017.svg",
   "clues": [
@@ -26,7 +26,7 @@
       "order": 3,
       "type": "biographical",
       "label": "A biographical detail",
-      "text": "Born near Warsaw in 1810, the composer left Poland at the age of twenty and never returned. He settled in France and made his living largely from teaching and playing in private salons rather than from public concerts.",
+      "text": "Born near Warsaw in 1810, the composer left his native country at the age of twenty and never returned. He settled in a foreign capital and made his living largely from teaching and playing in private salons rather than from public concerts.",
       "attribution": null
     },
     {
@@ -45,7 +45,7 @@
     }
   ],
   "explanation": {
-    "summary": "The evidence converges on Frédéric Chopin (Fryderyk), working at the charterhouse of Valldemossa on Mallorca in the winter of 1838-39.",
+    "summary": "The evidence converges on Frédéric Chopin (Fryderyk), writing in Spain at the charterhouse of Valldemossa on Mallorca in the winter of 1838-39.",
     "points": [
       {
         "clueOrder": null,

@@ -58,9 +58,9 @@ def main():
     check("catalogue is loaded", health.get("cases", 0) > 0, "no cases")
 
     composers = request(args.base_url, "/api/composers")
-    cities = request(args.base_url, "/api/cities")
+    countries = request(args.base_url, "/api/countries")
     instrumentation = request(args.base_url, "/api/instrumentation-categories")
-    check("reference data is present", all([composers, cities, instrumentation]))
+    check("reference data is present", all([composers, countries, instrumentation]))
 
     game = request(
         args.base_url,
@@ -77,8 +77,8 @@ def main():
 
     start_payload = json.dumps(game)
     leaked = [c["name"] for c in composers if c["name"] in start_payload]
-    leaked += [c["name"] for c in cities if c["name"] in start_payload]
-    check("no composer or city is named before a guess", not leaked, ", ".join(leaked))
+    leaked += [c["name"] for c in countries if c["name"] in start_payload]
+    check("no composer or country is named before a guess", not leaked, ", ".join(leaked))
     check(
         "every round ships its clues and an image",
         all(r["clues"] and r["imageUrl"] for r in rounds),
@@ -87,7 +87,7 @@ def main():
     guess = {
         "composerId": composers[0]["id"],
         "guessedYear": 1800,
-        "cityId": cities[0]["id"],
+        "countryId": countries[0]["id"],
         "instrumentationId": instrumentation[0]["id"],
     }
 
@@ -103,7 +103,7 @@ def main():
         expected_total += result["roundScore"]
 
         breakdown = result["scoreBreakdown"]
-        axes = sum(breakdown[axis]["points"] for axis in ("composer", "era", "city", "instrumentation"))
+        axes = sum(breakdown[axis]["points"] for axis in ("composer", "era", "country", "instrumentation"))
         check(
             f"round {round_['roundId']} scores as the sum of its axes",
             result["roundScore"] == axes,

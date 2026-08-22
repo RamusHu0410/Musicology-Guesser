@@ -22,9 +22,9 @@ import com.musicology.guesser.dto.SummaryResponse;
 import com.musicology.guesser.dto.SummaryRoundDto;
 import com.musicology.guesser.exception.ApiErrorCode;
 import com.musicology.guesser.exception.ApiException;
-import com.musicology.guesser.model.City;
 import com.musicology.guesser.model.Clue;
 import com.musicology.guesser.model.Composer;
+import com.musicology.guesser.model.Country;
 import com.musicology.guesser.model.GameRound;
 import com.musicology.guesser.model.GameSession;
 import com.musicology.guesser.model.MysteryCase;
@@ -146,8 +146,8 @@ public class GameService {
         if (!content.composerExists(guess.composerId())) {
             throw new ApiException(ApiErrorCode.VALIDATION_ERROR, "Unknown composerId " + guess.composerId());
         }
-        if (!content.cityExists(guess.cityId())) {
-            throw new ApiException(ApiErrorCode.VALIDATION_ERROR, "Unknown cityId " + guess.cityId());
+        if (!content.countryExists(guess.countryId())) {
+            throw new ApiException(ApiErrorCode.VALIDATION_ERROR, "Unknown countryId " + guess.countryId());
         }
         if (!content.instrumentationExists(guess.instrumentationId())) {
             throw new ApiException(
@@ -180,15 +180,15 @@ public class GameService {
 
     private CorrectAnswerDto toCorrectAnswerDto(MysteryCase mysteryCase) {
         Composer composer = content.requireComposer(mysteryCase.composerId());
-        City city = content.requireCity(mysteryCase.cityId());
+        Country country = content.requireCountry(mysteryCase.countryId());
         return new CorrectAnswerDto(
                 composer.id(),
                 composer.name(),
                 mysteryCase.workTitle(),
                 composer.era(),
                 mysteryCase.yearComposed(),
-                city.id(),
-                city.name(),
+                country.id(),
+                country.name(),
                 mysteryCase.instrumentationId());
     }
 

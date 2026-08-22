@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.musicology.guesser.dto.CityDto;
 import com.musicology.guesser.dto.ComposerDto;
+import com.musicology.guesser.dto.CountryDto;
 import com.musicology.guesser.dto.ReferenceItemDto;
 import com.musicology.guesser.service.ReferenceDataService;
 
@@ -26,9 +26,9 @@ public class ReferenceDataController {
         return referenceDataService.listComposers();
     }
 
-    @GetMapping("/cities")
-    public List<CityDto> cities() {
-        return referenceDataService.listCities();
+    @GetMapping("/countries")
+    public List<CountryDto> countries() {
+        return referenceDataService.listCountries();
     }
 
     @GetMapping("/instrumentation-categories")

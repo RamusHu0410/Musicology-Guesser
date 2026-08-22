@@ -4,7 +4,7 @@
   "composerId": "beethoven-l",
   "workTitle": "String Quartet No. 14 in C-sharp minor, Op. 131",
   "yearComposed": 1826,
-  "cityId": "vienna",
+  "countryId": "austria",
   "instrumentationId": "string-quartet",
   "manuscript": "case-019.svg",
   "clues": [
@@ -45,7 +45,7 @@
     }
   ],
   "explanation": {
-    "summary": "The deafness, the seven linked movements, and the Bonn-to-Vienna path all identify Ludwig van Beethoven, writing in Vienna in 1826.",
+    "summary": "The deafness, the seven linked movements, and the Bonn-to-Vienna path all identify Ludwig van Beethoven, writing in Austria in 1826.",
     "points": [
       { "clueOrder": 1, "text": "Seven linked movements beginning with a fugue describes the C-sharp minor Quartet, Op. 131." },
       { "clueOrder": 2, "text": "The Rhineland town is Bonn and the imperial capital is Vienna, where he lived from 1792 until his death and where this quartet was written." },

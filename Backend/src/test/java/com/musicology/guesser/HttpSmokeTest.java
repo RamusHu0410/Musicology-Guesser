@@ -28,9 +28,9 @@ class HttpSmokeTest {
         assertThat(composers.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(composers.getBody()).contains("\"id\":\"chopin-f\"", "\"era\":\"romantic\"");
 
-        ResponseEntity<String> cities = restTemplate.getForEntity("/api/cities", String.class);
-        assertThat(cities.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(cities.getBody()).contains("\"id\":\"vienna\"", "\"lat\":48.2082");
+        ResponseEntity<String> countries = restTemplate.getForEntity("/api/countries", String.class);
+        assertThat(countries.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(countries.getBody()).contains("\"id\":\"austria\"", "\"lat\":48.2082");
     }
 
     @Test

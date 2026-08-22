@@ -36,7 +36,7 @@ set `DATA_DIR` to an absolute path.
 data/
 ├── reference/
 │   ├── composers.json                    id, name, era
-│   ├── cities.json                       id, name, country, coordinates
+│   ├── countries.json                    id, name, coordinates
 │   └── instrumentation-categories.json
 ├── cases/
 │   └── case-017.json                     one file per mystery: clues, answer, explanation
@@ -65,7 +65,7 @@ changes and no rebuild of the jar.
   "composerId": "brahms-j",
   "workTitle": "...",
   "yearComposed": 1876,
-  "cityId": "vienna",
+  "countryId": "austria",
   "instrumentationId": "orchestral",
   "manuscript": "case-023.svg",
   "clues": [
@@ -86,9 +86,9 @@ changes and no rebuild of the jar.
 
 Three rules when writing content:
 
-1. **Clue text must never name the composer or the answer city.** Clues are sent to the client
+1. **Clue text must never name the composer or the answer country.** Clues are sent to the client
    before any guess is submitted, so anything in them is public. Say "an imperial capital" rather
-   than "Vienna", and let the reveal name it. Tests enforce both.
+   than "Austria", and let the reveal name it. Tests enforce both.
 2. **Five clues per case, ordered from cryptic to obvious.** The player unlocks them one at a time,
    so `order` is a difficulty ramp: clue 1 should be solvable only by someone who already knows the
    repertoire, and clue 5 should end the guessing for anyone with a general music education — the
@@ -120,7 +120,7 @@ hand a deployed frontend URLs pointing at the developer's own machine.
 | --- | --- |
 | GET | `/api/health` |
 | GET | `/api/composers` |
-| GET | `/api/cities` |
+| GET | `/api/countries` |
 | GET | `/api/instrumentation-categories` |
 | POST | `/api/game/start` |
 | POST | `/api/game/{sessionId}/rounds/{roundId}/guess` |
@@ -131,14 +131,13 @@ hand a deployed frontend URLs pointing at the developer's own machine.
 
 Four axes, 500 points each, 2000 per round. The server owns all of it.
 
-- Composer, city and instrumentation are exact-match: 500 or 0.
+- Composer, country and instrumentation are exact-match: 500 or 0.
 - Year is distance-based: `500 − (10 × yearsOff)`, floored at 0, so a guess two years out scores
   480 and anything 50+ years out scores nothing. This reproduces the worked example in the
   contract. `correct` on that axis means within 5 years.
 
-The city axis scores **where the work was written**, not where the composer was from. Cities carry
-coordinates, so switching to distance-based map scoring later is a change to `ScoringService` and
-the guess request shape, not to the content.
+The country axis scores **where the work was written**, not the composer's nationality. Countries
+carry capital coordinates for a map.
 
 ## Tests
 

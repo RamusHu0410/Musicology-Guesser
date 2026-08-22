@@ -35,23 +35,21 @@ List of all composers the game can ask about — used to power the composer sear
 ```
 
 Composers carry no location. The location axis is about **where the individual work was written**,
-which belongs to the case rather than the composer — see `GET /api/cities` below.
+which belongs to the case rather than the composer — see `GET /api/countries` below.
 
-### `GET /api/cities`
-The places a work could have been written, used to power the location guess. Replaces the earlier
-`GET /api/regions`: regions were too coarse to be interesting when nearly every composer in the
-catalogue is European.
+### `GET /api/countries`
+The countries a work could have been written in, used to power the location guess. Replaces the
+earlier `GET /api/cities` (and before that `/api/regions`).
 
 ```json
 [
-  { "id": "vienna", "name": "Vienna", "country": "Austria", "lat": 48.2082, "lon": 16.3738 },
-  { "id": "valldemossa", "name": "Valldemossa", "country": "Spain", "lat": 39.7097, "lon": 2.6225 }
+  { "id": "austria", "name": "Austria", "lat": 48.2082, "lon": 16.3738 },
+  { "id": "spain", "name": "Spain", "lat": 40.4168, "lon": -3.7038 }
 ]
 ```
 
-Coordinates are included so the list can be rendered on a map. Scoring is currently exact match on
-`cityId`; the coordinates mean we can switch to GeoGuessr-style distance scoring later without
-changing the data or the request shape.
+Coordinates are the conventional capital, so the list can be rendered on a map. Scoring is exact
+match on `countryId`.
 
 ### `GET /api/instrumentation-categories`
 ```json
@@ -138,7 +136,7 @@ Request:
 {
   "composerId": "chopin-f",
   "guessedYear": 1840,
-  "cityId": "valldemossa",
+  "countryId": "spain",
   "instrumentationId": "solo-piano"
 }
 ```
@@ -151,14 +149,14 @@ Response:
     "workTitle": "Prelude in D-flat major, Op. 28 No. 15",
     "era": "romantic",
     "yearComposed": 1839,
-    "cityId": "valldemossa",
-    "cityName": "Valldemossa",
+    "countryId": "spain",
+    "countryName": "Spain",
     "instrumentationId": "solo-piano"
   },
   "scoreBreakdown": {
     "composer": { "points": 500, "maxPoints": 500, "correct": true },
     "era": { "points": 480, "maxPoints": 500, "correct": true, "yearsOff": 2 },
-    "city": { "points": 500, "maxPoints": 500, "correct": true },
+    "country": { "points": 500, "maxPoints": 500, "correct": true },
     "instrumentation": { "points": 500, "maxPoints": 500, "correct": true }
   },
   "roundScore": 1980,
@@ -179,10 +177,10 @@ Notes:
   via `clueId` so the UI can show the reasoning next to the evidence it came from; `clueId` is
   `null` for points about the manuscript image itself.
 - `workTitle` is what the excerpt actually is, for the reveal screen.
-- `era` describes the composer. `yearComposed` and `cityId` describe **this work**: where and when
-  it was written. Chopin's Op. 28 No. 15 scores as Valldemossa, because that is where he wrote it,
-  even though he was Polish and lived in Paris.
-- `cityName` is included alongside `cityId` so the reveal screen does not have to look it up.
+- `era` describes the composer. `yearComposed` and `countryId` describe **this work**: where and when
+  it was written. Chopin's Op. 28 No. 15 scores as Spain, because that is where he wrote it,
+  even though he was Polish and lived in France.
+- `countryName` is included alongside `countryId` so the reveal screen does not have to look it up.
 - **Backend owns scoring**, not the frontend. This keeps scoring consistent/tamper-resistant and
   lets scoring rules evolve without a frontend redeploy. Frontend just renders whatever breakdown
   comes back.
@@ -238,7 +236,7 @@ should key off the `error` string rather than the status code.
 - `ROUND_NOT_FOUND` — 404.
 - `ROUND_ALREADY_GUESSED` — 409. Rounds take exactly one guess.
 - `VALIDATION_ERROR` — 400. Missing or malformed fields, unparseable JSON, and ids that are
-  well-formed but not in the catalogue (an unknown `cityId`).
+  well-formed but not in the catalogue (an unknown `countryId`).
 - `NOT_FOUND` — 404. A URL that matches no endpoint or static file. Distinct from the two specific
   404s above so a typo in a path is not mistaken for a missing session.
 - `INTERNAL_ERROR` — 500. Genuinely unexpected; the detail is logged server-side and the client
@@ -256,18 +254,16 @@ should key off the `error` string rather than the status code.
   survive a backend restart.
 - **Excerpt images are pre-cropped offline** and served as static backend assets. No runtime PDF
   rendering. Sources are public-domain (IMSLP).
-- **Location is the city where the work was written**, not the composer's region. Regions were
-  dropped: every composer in the catalogue is European, so a region guess was close to free.
+- **Location is the country where the work was written**, not the composer's nationality. Chopin's
+  Mallorca prelude scores as Spain. Cities and regions were dropped as the guess unit.
 - **Year scoring is `500 − (10 × yearsOff)`**, floored at 0, matching the worked example above.
-  `correct` on that axis means within 5 years. Composer, city and instrumentation are
+  `correct` on that axis means within 5 years. Composer, country and instrumentation are
   all-or-nothing.
 - **There is no database.** Content is a folder of JSON files; sessions are in memory.
 - **`/summary` returns each round's composer and work title**, alongside the scores, for the
   end-of-game recap. Additive: the original three fields are unchanged.
-- **The guess sends a `cityId`, scored as an exact match.** True GeoGuessr scoring — a map pin
-  scored by kilometres from the real location — is deferred, not rejected. The cities already
-  carry coordinates, so the data is ready if the frontend wants to move to a lat/lon pair later.
-  `GET /api/cities` stays either way, since the map needs coordinates to place markers.
+- **The guess sends a `countryId`, scored as an exact match.** Countries carry capital coordinates
+  so a map can still place markers.
 
 ## Open questions for backend
 

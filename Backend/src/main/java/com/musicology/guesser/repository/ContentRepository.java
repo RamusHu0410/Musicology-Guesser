@@ -23,9 +23,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicology.guesser.config.AppProperties;
-import com.musicology.guesser.model.City;
 import com.musicology.guesser.model.Clue;
 import com.musicology.guesser.model.Composer;
+import com.musicology.guesser.model.Country;
 import com.musicology.guesser.model.ExplanationPoint;
 import com.musicology.guesser.model.MysteryCase;
 import com.musicology.guesser.model.ReferenceItem;
@@ -45,8 +45,8 @@ public class ContentRepository {
 
     private final List<Composer> composers;
     private final Map<String, Composer> composersById;
-    private final List<City> cities;
-    private final Map<String, City> citiesById;
+    private final List<Country> countries;
+    private final Map<String, Country> countriesById;
     private final List<ReferenceItem> instrumentationCategories;
     private final List<MysteryCase> cases;
     private final Map<String, MysteryCase> casesById;
@@ -62,21 +62,21 @@ public class ContentRepository {
                 .enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
 
         this.composers = readList(mapper, dataDir.resolve("reference/composers.json"), new TypeReference<>() {});
-        this.cities = readList(mapper, dataDir.resolve("reference/cities.json"), new TypeReference<>() {});
+        this.countries = readList(mapper, dataDir.resolve("reference/countries.json"), new TypeReference<>() {});
         this.instrumentationCategories = readList(
                 mapper, dataDir.resolve("reference/instrumentation-categories.json"), new TypeReference<>() {});
         this.cases = readCases(mapper, dataDir.resolve("cases"));
 
         this.composersById = index(composers, Composer::id, "composer");
-        this.citiesById = index(cities, City::id, "city");
+        this.countriesById = index(countries, Country::id, "country");
         this.casesById = index(cases, MysteryCase::id, "case");
 
         validate(dataDir);
 
         log.info(
-                "Loaded {} composers, {} cities and {} mystery cases from {}",
+                "Loaded {} composers, {} countries and {} mystery cases from {}",
                 composers.size(),
-                cities.size(),
+                countries.size(),
                 cases.size(),
                 dataDir);
     }
@@ -97,20 +97,20 @@ public class ContentRepository {
         return composer;
     }
 
-    public List<City> findAllCities() {
-        return cities;
+    public List<Country> findAllCountries() {
+        return countries;
     }
 
-    public boolean cityExists(String id) {
-        return citiesById.containsKey(id);
+    public boolean countryExists(String id) {
+        return countriesById.containsKey(id);
     }
 
-    public City requireCity(String id) {
-        City city = citiesById.get(id);
-        if (city == null) {
-            throw new IllegalStateException("Unknown cityId " + id);
+    public Country requireCountry(String id) {
+        Country country = countriesById.get(id);
+        if (country == null) {
+            throw new IllegalStateException("Unknown countryId " + id);
         }
-        return city;
+        return country;
     }
 
     public List<ReferenceItem> findAllInstrumentationCategories() {
@@ -189,7 +189,7 @@ public class ContentRepository {
             requireText(where + " id", mysteryCase.id());
             requireText(where + " workTitle", mysteryCase.workTitle());
             requireText(where + " composerId", mysteryCase.composerId());
-            requireText(where + " cityId", mysteryCase.cityId());
+            requireText(where + " countryId", mysteryCase.countryId());
             requireText(where + " instrumentationId", mysteryCase.instrumentationId());
             if (mysteryCase.yearComposed() < 1000 || mysteryCase.yearComposed() > 2100) {
                 throw new IllegalStateException(
@@ -203,8 +203,8 @@ public class ContentRepository {
                 throw new IllegalStateException(
                         where + " references unknown composerId " + mysteryCase.composerId());
             }
-            if (!citiesById.containsKey(mysteryCase.cityId())) {
-                throw new IllegalStateException(where + " references unknown cityId " + mysteryCase.cityId());
+            if (!countriesById.containsKey(mysteryCase.countryId())) {
+                throw new IllegalStateException(where + " references unknown countryId " + mysteryCase.countryId());
             }
             if (!instrumentationExists(mysteryCase.instrumentationId())) {
                 throw new IllegalStateException(

@@ -4,7 +4,7 @@
   "composerId": "bach-js",
   "workTitle": "Das wohltemperirte Clavier, Book I",
   "yearComposed": 1722,
-  "cityId": "kothen",
+  "countryId": "germany",
   "instrumentationId": "solo-piano",
   "manuscript": "case-018.svg",
   "clues": [
@@ -19,7 +19,7 @@
       "order": 2,
       "type": "place",
       "label": "Places the composer lived and worked",
-      "text": "Almost the whole of the composer's working life was spent within a small radius of towns in central Germany. He never travelled outside German-speaking lands.",
+      "text": "Almost the whole of the composer's working life was spent within a small radius of towns in the centre of the German-speaking lands. He never travelled outside that language area.",
       "attribution": null
     },
     {
@@ -45,7 +45,7 @@
     }
   ],
   "explanation": {
-    "summary": "A Reformed princely court, a career confined to central Germany, and a systematic tour of all twenty-four keys: Johann Sebastian Bach at Köthen.",
+    "summary": "A Reformed princely court in Germany, a career confined to that language area, and a systematic tour of all twenty-four keys: Johann Sebastian Bach at Köthen.",
     "points": [
       { "clueOrder": 1, "text": "The systematic tour of all twenty-four keys, prelude paired with fugue, is the organising idea of Das wohltemperirte Clavier." },
       { "clueOrder": 2, "text": "A career confined to central Germany, with no foreign travel, is unusual among major Baroque composers and characteristic of Bach." },

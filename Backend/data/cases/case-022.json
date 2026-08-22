@@ -4,7 +4,7 @@
   "composerId": "debussy-c",
   "workTitle": "Préludes, Book I",
   "yearComposed": 1910,
-  "cityId": "paris",
+  "countryId": "france",
   "instrumentationId": "solo-piano",
   "manuscript": "case-022.svg",
   "clues": [
@@ -45,7 +45,7 @@
     }
   ],
   "explanation": {
-    "summary": "French Conservatoire training, the 1889 gamelan encounter, and non-functional harmony point to Claude Debussy, working in Paris in 1910.",
+    "summary": "Conservatoire training in France, the 1889 gamelan encounter, and non-functional harmony point to Claude Debussy, working in Paris in 1910.",
     "points": [
       { "clueOrder": 1, "text": "Whole-tone writing and planing parallel chords are the harmonic signature of Debussy." },
       { "clueOrder": 2, "text": "Titles printed at the end of each piece is a distinctive feature of the Préludes." },
