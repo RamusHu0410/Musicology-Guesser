@@ -1,0 +1,12 @@
+[
+  { "id": "austria",        "name": "Austria",         "lat": 48.2082, "lon": 16.3738 },
+  { "id": "germany",        "name": "Germany",         "lat": 52.5200, "lon": 13.4050 },
+  { "id": "france",         "name": "France",          "lat": 48.8566, "lon": 2.3522 },
+  { "id": "spain",          "name": "Spain",           "lat": 40.4168, "lon": -3.7038 },
+  { "id": "united-kingdom", "name": "United Kingdom",  "lat": 51.5074, "lon": -0.1278 },
+  { "id": "poland",         "name": "Poland",          "lat": 52.2297, "lon": 21.0122 },
+  { "id": "czechia",        "name": "Czechia",         "lat": 50.0755, "lon": 14.4378 },
+  { "id": "hungary",        "name": "Hungary",         "lat": 47.4979, "lon": 19.0402 },
+  { "id": "italy",          "name": "Italy",           "lat": 41.9028, "lon": 12.4964 },
+  { "id": "russia",         "name": "Russia",          "lat": 55.7558, "lon": 37.6173 }
+]

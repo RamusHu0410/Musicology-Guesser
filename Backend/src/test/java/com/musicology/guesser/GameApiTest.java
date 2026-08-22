@@ -19,8 +19,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.musicology.guesser.model.City;
 import com.musicology.guesser.model.Composer;
+import com.musicology.guesser.model.Country;
 import com.musicology.guesser.model.MysteryCase;
 import com.musicology.guesser.model.ReferenceItem;
 import com.musicology.guesser.repository.ContentRepository;
@@ -68,7 +68,7 @@ class GameApiTest {
         }
         for (MysteryCase mysteryCase : content.findAllCases()) {
             assertThat(payload).doesNotContain(mysteryCase.workTitle());
-            assertThat(payload).doesNotContain(content.requireCity(mysteryCase.cityId()).name());
+            assertThat(payload).doesNotContain(content.requireCountry(mysteryCase.countryId()).name());
         }
     }
 
@@ -78,7 +78,7 @@ class GameApiTest {
         String sessionId = game.get("sessionId").asText();
         MysteryCase answer = caseBehind(game.get("rounds").get(0));
         Composer composer = content.requireComposer(answer.composerId());
-        City city = content.requireCity(answer.cityId());
+        Country country = content.requireCountry(answer.countryId());
 
         mockMvc.perform(guess(sessionId, "r1", answer, answer.yearComposed()))
                 .andExpect(status().isOk())
@@ -86,12 +86,12 @@ class GameApiTest {
                 .andExpect(jsonPath("$.correct.composerName").value(composer.name()))
                 .andExpect(jsonPath("$.correct.workTitle").value(answer.workTitle()))
                 .andExpect(jsonPath("$.correct.yearComposed").value(answer.yearComposed()))
-                .andExpect(jsonPath("$.correct.cityId").value(city.id()))
-                .andExpect(jsonPath("$.correct.cityName").value(city.name()))
+                .andExpect(jsonPath("$.correct.countryId").value(country.id()))
+                .andExpect(jsonPath("$.correct.countryName").value(country.name()))
                 .andExpect(jsonPath("$.scoreBreakdown.composer.points").value(500))
                 .andExpect(jsonPath("$.scoreBreakdown.era.points").value(500))
                 .andExpect(jsonPath("$.scoreBreakdown.era.yearsOff").value(0))
-                .andExpect(jsonPath("$.scoreBreakdown.city.points").value(500))
+                .andExpect(jsonPath("$.scoreBreakdown.country.points").value(500))
                 .andExpect(jsonPath("$.roundScore").value(2000))
                 .andExpect(jsonPath("$.maxRoundScore").value(2000))
                 .andExpect(jsonPath("$.explanation.summary").isNotEmpty())
@@ -113,32 +113,32 @@ class GameApiTest {
                 .andExpect(jsonPath("$.roundScore").value(1980));
     }
 
-    /** The city axis scores where the work was written, not where the composer came from. */
+    /** The country axis scores where the work was written, not the composer's nationality. */
     @Test
-    void wrongCityScoresNothingOnThatAxis() throws Exception {
+    void wrongCountryScoresNothingOnThatAxis() throws Exception {
         JsonNode game = startGame(1);
         String sessionId = game.get("sessionId").asText();
         MysteryCase answer = caseBehind(game.get("rounds").get(0));
         Composer composer = content.requireComposer(answer.composerId());
 
-        String otherCityId = content.findAllCities().stream()
-                .map(City::id)
-                .filter(id -> !id.equals(answer.cityId()))
+        String otherCountryId = content.findAllCountries().stream()
+                .map(Country::id)
+                .filter(id -> !id.equals(answer.countryId()))
                 .findFirst()
                 .orElseThrow();
 
         String body = """
-                {"composerId":"%s","guessedYear":%d,"cityId":"%s","instrumentationId":"%s"}
-                """.formatted(composer.id(), answer.yearComposed(), otherCityId, answer.instrumentationId());
+                {"composerId":"%s","guessedYear":%d,"countryId":"%s","instrumentationId":"%s"}
+                """.formatted(composer.id(), answer.yearComposed(), otherCountryId, answer.instrumentationId());
 
         mockMvc.perform(post("/api/game/{s}/rounds/{r}/guess", sessionId, "r1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.scoreBreakdown.city.points").value(0))
-                .andExpect(jsonPath("$.scoreBreakdown.city.correct").value(false))
+                .andExpect(jsonPath("$.scoreBreakdown.country.points").value(0))
+                .andExpect(jsonPath("$.scoreBreakdown.country.correct").value(false))
                 .andExpect(jsonPath("$.scoreBreakdown.composer.points").value(500))
-                .andExpect(jsonPath("$.correct.cityId").value(answer.cityId()))
+                .andExpect(jsonPath("$.correct.countryId").value(answer.countryId()))
                 .andExpect(jsonPath("$.roundScore").value(1500));
     }
 
@@ -155,8 +155,8 @@ class GameApiTest {
                 .orElseThrow();
 
         String body = """
-                {"composerId":"%s","guessedYear":%d,"cityId":"%s","instrumentationId":"%s"}
-                """.formatted(otherComposerId, answer.yearComposed(), answer.cityId(), answer.instrumentationId());
+                {"composerId":"%s","guessedYear":%d,"countryId":"%s","instrumentationId":"%s"}
+                """.formatted(otherComposerId, answer.yearComposed(), answer.countryId(), answer.instrumentationId());
 
         mockMvc.perform(post("/api/game/{s}/rounds/{r}/guess", sessionId, "r1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -216,12 +216,12 @@ class GameApiTest {
     }
 
     @Test
-    void unknownCityIdIsRejected() throws Exception {
+    void unknownCountryIdIsRejected() throws Exception {
         JsonNode game = startGame(1);
         MysteryCase answer = caseBehind(game.get("rounds").get(0));
 
         String body = """
-                {"composerId":"%s","guessedYear":%d,"cityId":"atlantis","instrumentationId":"%s"}
+                {"composerId":"%s","guessedYear":%d,"countryId":"atlantis","instrumentationId":"%s"}
                 """.formatted(answer.composerId(), answer.yearComposed(), answer.instrumentationId());
 
         mockMvc.perform(post("/api/game/{s}/rounds/{r}/guess", game.get("sessionId").asText(), "r1")
@@ -276,16 +276,16 @@ class GameApiTest {
 
         String otherComposerId = otherThan(
                 answer.composerId(), content.findAllComposers().stream().map(Composer::id).toList());
-        String otherCityId =
-                otherThan(answer.cityId(), content.findAllCities().stream().map(City::id).toList());
+        String otherCountryId =
+                otherThan(answer.countryId(), content.findAllCountries().stream().map(Country::id).toList());
         String otherInstrumentationId = otherThan(
                 answer.instrumentationId(),
                 content.findAllInstrumentationCategories().stream().map(ReferenceItem::id).toList());
 
         String body = """
-                {"composerId":"%s","guessedYear":%d,"cityId":"%s","instrumentationId":"%s"}
+                {"composerId":"%s","guessedYear":%d,"countryId":"%s","instrumentationId":"%s"}
                 """
-                .formatted(otherComposerId, answer.yearComposed() - 500, otherCityId, otherInstrumentationId);
+                .formatted(otherComposerId, answer.yearComposed() - 500, otherCountryId, otherInstrumentationId);
 
         mockMvc.perform(post("/api/game/{s}/rounds/{r}/guess", sessionId, "r1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -366,8 +366,8 @@ class GameApiTest {
     private MockHttpServletRequestBuilder guess(
             String sessionId, String roundId, MysteryCase answer, int guessedYear) {
         String body = """
-                {"composerId":"%s","guessedYear":%d,"cityId":"%s","instrumentationId":"%s"}
-                """.formatted(answer.composerId(), guessedYear, answer.cityId(), answer.instrumentationId());
+                {"composerId":"%s","guessedYear":%d,"countryId":"%s","instrumentationId":"%s"}
+                """.formatted(answer.composerId(), guessedYear, answer.countryId(), answer.instrumentationId());
         return post("/api/game/{s}/rounds/{r}/guess", sessionId, roundId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body);

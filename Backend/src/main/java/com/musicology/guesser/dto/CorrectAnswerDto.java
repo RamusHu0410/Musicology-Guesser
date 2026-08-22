@@ -6,7 +6,7 @@ public record CorrectAnswerDto(
         String workTitle,
         String era,
         int yearComposed,
-        String cityId,
-        String cityName,
+        String countryId,
+        String countryName,
         String instrumentationId) {
 }

@@ -27,15 +27,14 @@ class ReferenceDataApiTest {
                 .andExpect(jsonPath("$[?(@.id == 'chopin-f')].era").value("romantic"));
     }
 
-    /** Cities carry coordinates so the frontend can put them on a map. */
+    /** Countries carry coordinates so the frontend can put them on a map. */
     @Test
-    void listsCitiesWithCoordinates() throws Exception {
-        mockMvc.perform(get("/api/cities"))
+    void listsCountriesWithCoordinates() throws Exception {
+        mockMvc.perform(get("/api/countries"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[?(@.id == 'vienna')].name").value("Vienna"))
-                .andExpect(jsonPath("$[?(@.id == 'vienna')].country").value("Austria"))
-                .andExpect(jsonPath("$[?(@.id == 'vienna')].lat").value(48.2082))
-                .andExpect(jsonPath("$[?(@.id == 'vienna')].lon").value(16.3738));
+                .andExpect(jsonPath("$[?(@.id == 'austria')].name").value("Austria"))
+                .andExpect(jsonPath("$[?(@.id == 'austria')].lat").value(48.2082))
+                .andExpect(jsonPath("$[?(@.id == 'austria')].lon").value(16.3738));
     }
 
     @Test

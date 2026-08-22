@@ -10,11 +10,11 @@ import com.musicology.guesser.model.MysteryCase;
 /**
  * Scoring lives on the server so it stays consistent and cannot be tampered with by the client.
  *
- * <p>Composer, city and instrumentation are all-or-nothing. The year axis is distance-based:
+ * <p>Composer, country and instrumentation are all-or-nothing. The year axis is distance-based:
  * ten points are lost per year of error, so a guess 2 years out scores 480 and anything 50 or more
  * years out scores nothing.
  *
- * <p>The city axis scores where the <em>work</em> was written, not where the composer was born.
+ * <p>The country axis scores where the <em>work</em> was written, not the composer's nationality.
  */
 @Service
 public class ScoringService {
@@ -27,7 +27,7 @@ public class ScoringService {
 
     public ScoreBreakdownDto score(GuessRequest guess, MysteryCase mysteryCase) {
         boolean composerCorrect = mysteryCase.composerId().equals(guess.composerId());
-        boolean cityCorrect = mysteryCase.cityId().equals(guess.cityId());
+        boolean countryCorrect = mysteryCase.countryId().equals(guess.countryId());
         boolean instrumentationCorrect = mysteryCase.instrumentationId().equals(guess.instrumentationId());
 
         int yearsOff = Math.abs(mysteryCase.yearComposed() - guess.guessedYear());
@@ -36,7 +36,7 @@ public class ScoringService {
         return new ScoreBreakdownDto(
                 AxisScoreDto.exactMatch(composerCorrect ? AXIS_MAX_POINTS : 0, AXIS_MAX_POINTS, composerCorrect),
                 new AxisScoreDto(yearPoints, AXIS_MAX_POINTS, yearsOff <= YEAR_TOLERANCE, yearsOff),
-                AxisScoreDto.exactMatch(cityCorrect ? AXIS_MAX_POINTS : 0, AXIS_MAX_POINTS, cityCorrect),
+                AxisScoreDto.exactMatch(countryCorrect ? AXIS_MAX_POINTS : 0, AXIS_MAX_POINTS, countryCorrect),
                 AxisScoreDto.exactMatch(
                         instrumentationCorrect ? AXIS_MAX_POINTS : 0, AXIS_MAX_POINTS, instrumentationCorrect));
     }

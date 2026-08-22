@@ -4,7 +4,7 @@
   "composerId": "schubert-f",
   "workTitle": "Winterreise, D. 911",
   "yearComposed": 1827,
-  "cityId": "vienna",
+  "countryId": "austria",
   "instrumentationId": "vocal-opera",
   "manuscript": "case-021.svg",
   "clues": [
@@ -45,7 +45,7 @@
     }
   ],
   "explanation": {
-    "summary": "The song output, the circle of friends, and the Müller settings identify Franz Schubert, writing in Vienna in 1827.",
+    "summary": "The song output, the circle of friends, and the Müller settings identify Franz Schubert, writing in Austria in 1827.",
     "points": [
       { "clueOrder": 1, "text": "Twenty-four Müller settings on a winter journey identifies Winterreise, D. 911." },
       { "clueOrder": 2, "text": "The capital is Vienna, where Schubert lived almost his entire life and where this cycle was written the year before his death." },

@@ -118,7 +118,7 @@ class ErrorContractTest {
      */
     private String validGuessBody() {
         return """
-                {"composerId":"bach-js","guessedYear":1700,"cityId":"vienna","instrumentationId":"orchestral"}
+                {"composerId":"bach-js","guessedYear":1700,"countryId":"austria","instrumentationId":"orchestral"}
                 """;
     }
 }

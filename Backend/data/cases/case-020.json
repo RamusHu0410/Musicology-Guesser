@@ -4,7 +4,7 @@
   "composerId": "mozart-wa",
   "workTitle": "Symphony No. 41 in C major, K. 551",
   "yearComposed": 1788,
-  "cityId": "vienna",
+  "countryId": "austria",
   "instrumentationId": "orchestral",
   "manuscript": "case-020.svg",
   "clues": [
@@ -45,7 +45,7 @@
     }
   ],
   "explanation": {
-    "summary": "A Salzburg prodigy who went freelance in Vienna, and a finale that stacks five themes at once: Wolfgang Amadeus Mozart, Vienna, 1788.",
+    "summary": "A Salzburg prodigy who went freelance in Vienna, and a finale that stacks five themes at once: Wolfgang Amadeus Mozart, writing in Austria in 1788.",
     "points": [
       { "clueOrder": 1, "text": "A finale combining five themes in invertible counterpoint is the \"Jupiter\" Symphony, K. 551." },
       { "clueOrder": 2, "text": "The 1781 break with Archbishop Colloredo marks the move from Salzburg to Vienna." },

@@ -3,14 +3,14 @@ package com.musicology.guesser.dto;
 public record ScoreBreakdownDto(
         AxisScoreDto composer,
         AxisScoreDto era,
-        AxisScoreDto city,
+        AxisScoreDto country,
         AxisScoreDto instrumentation) {
 
     public int total() {
-        return composer.points() + era.points() + city.points() + instrumentation.points();
+        return composer.points() + era.points() + country.points() + instrumentation.points();
     }
 
     public int maxTotal() {
-        return composer.maxPoints() + era.maxPoints() + city.maxPoints() + instrumentation.maxPoints();
+        return composer.maxPoints() + era.maxPoints() + country.maxPoints() + instrumentation.maxPoints();
     }
 }

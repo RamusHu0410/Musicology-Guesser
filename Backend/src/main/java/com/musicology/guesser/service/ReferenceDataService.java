@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.musicology.guesser.dto.CityDto;
 import com.musicology.guesser.dto.ComposerDto;
+import com.musicology.guesser.dto.CountryDto;
 import com.musicology.guesser.dto.ReferenceItemDto;
-import com.musicology.guesser.model.City;
 import com.musicology.guesser.model.Composer;
+import com.musicology.guesser.model.Country;
 import com.musicology.guesser.model.ReferenceItem;
 import com.musicology.guesser.repository.ContentRepository;
 
@@ -29,10 +29,10 @@ public class ReferenceDataService {
                 .toList();
     }
 
-    public List<CityDto> listCities() {
-        return content.findAllCities().stream()
-                .sorted(Comparator.comparing(City::name))
-                .map(city -> new CityDto(city.id(), city.name(), city.country(), city.lat(), city.lon()))
+    public List<CountryDto> listCountries() {
+        return content.findAllCountries().stream()
+                .sorted(Comparator.comparing(Country::name))
+                .map(country -> new CountryDto(country.id(), country.name(), country.lat(), country.lon()))
                 .toList();
     }
 

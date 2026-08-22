@@ -25,23 +25,23 @@ class ContentCatalogueTest {
     void catalogueLoads() {
         assertThat(content.findAllCases()).isNotEmpty();
         assertThat(content.findAllComposers()).isNotEmpty();
-        assertThat(content.findAllCities()).isNotEmpty();
+        assertThat(content.findAllCountries()).isNotEmpty();
         assertThat(content.findAllInstrumentationCategories()).isNotEmpty();
     }
 
     /**
-     * The city axis is only a puzzle if the clues make the player infer the place rather than
+     * The country axis is only a puzzle if the clues make the player infer the place rather than
      * read it off the page.
      */
     @Test
-    void noClueNamesItsCity() {
+    void noClueNamesItsCountry() {
         for (MysteryCase mysteryCase : content.findAllCases()) {
-            String cityName = content.requireCity(mysteryCase.cityId()).name();
+            String countryName = content.requireCountry(mysteryCase.countryId()).name();
 
             for (Clue clue : mysteryCase.clues()) {
                 assertThat(clue.text())
-                        .as("clue %d of %s must not name %s", clue.order(), mysteryCase.id(), cityName)
-                        .doesNotContain(cityName);
+                        .as("clue %d of %s must not name %s", clue.order(), mysteryCase.id(), countryName)
+                        .doesNotContain(countryName);
                 assertThat(clue.text())
                         .as("clue %d of %s must not name the work", clue.order(), mysteryCase.id())
                         .doesNotContain(mysteryCase.workTitle());
@@ -68,17 +68,17 @@ class ContentCatalogueTest {
 
     /** The reveal is where the player learns who wrote it and where, so it should say both. */
     @Test
-    void everyExplanationNamesItsCityAndComposer() {
+    void everyExplanationNamesItsCountryAndComposer() {
         for (MysteryCase mysteryCase : content.findAllCases()) {
-            String cityName = content.requireCity(mysteryCase.cityId()).name();
+            String countryName = content.requireCountry(mysteryCase.countryId()).name();
             Composer composer = content.requireComposer(mysteryCase.composerId());
             String surname = composer.name().substring(composer.name().lastIndexOf(' ') + 1);
             String reveal = mysteryCase.explanation().summary()
                     + mysteryCase.explanation().points().stream().map(point -> point.text()).reduce("", String::concat);
 
             assertThat(reveal)
-                    .as("the reveal for %s should name %s", mysteryCase.id(), cityName)
-                    .contains(cityName);
+                    .as("the reveal for %s should name %s", mysteryCase.id(), countryName)
+                    .contains(countryName);
             assertThat(reveal)
                     .as("the reveal for %s should name %s", mysteryCase.id(), composer.name())
                     .contains(surname);
