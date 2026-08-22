@@ -1,15 +1,7 @@
-import {
-  COMPOSERS,
-  EXCERPTS,
-  getExcerpt,
-  INSTRUMENTATION_CATEGORIES,
-  REGION_DISTANCE,
-  REGION_DISTANCE_POINTS,
-  REGIONS,
-} from './mockData'
+import { COMPOSER_MAP_POINTS, COMPOSERS, EXCERPTS, getExcerpt, INSTRUMENTATION_CATEGORIES, REGIONS } from './mockData'
 import { generatePlaceholderScoreImage } from './placeholderScore'
 import type { ApiClient } from './client'
-import type { GuessPayload, RoundResult, ScoreEntry } from '../types/domain'
+import type { Composer, GuessPayload, RegionGuess, RoundResult, ScoreEntry } from '../types/domain'
 
 const NETWORK_DELAY_MS = 250
 
@@ -25,9 +17,17 @@ const ERA_MAX_POINTS = 500
 const ERA_GRACE_YEARS = 5
 const ERA_MAX_YEARS_OFF = 100
 
+// Full points for a pin within this many map units of the real spot, decaying linearly to 0 by
+// REGION_MAX_DISTANCE — mirrors GeoGuessr's distance-based round scoring.
+const REGION_GRACE_DISTANCE = 15
+const REGION_MAX_DISTANCE = 260
+
 // Skipping a question honestly (rather than guessing blind) always earns this flat bonus,
 // regardless of category — better than a wrong guess, worse than a right one.
 const HONESTY_BONUS_POINTS = 200
+
+// Revealing a clue costs points off the round — evidence is a paid hint, not a freebie.
+const EVIDENCE_COST_POINTS = 100
 
 function scoreExactMatch(guessValue: string | null, correctValue: string, maxPoints: number): ScoreEntry {
   if (guessValue === null) {
@@ -51,13 +51,28 @@ function scoreEra(guessedYear: number | null, actualYear: number): ScoreEntry {
   return { points, maxPoints: ERA_MAX_POINTS, correct: points === ERA_MAX_POINTS, skipped: false, yearsOff }
 }
 
-function scoreRegion(guessRegionId: string | null, actualRegionId: string): ScoreEntry {
-  if (guessRegionId === null) {
+function scoreRegion(guess: RegionGuess | null, composer: Composer): ScoreEntry {
+  if (guess === null) {
     return { points: HONESTY_BONUS_POINTS, maxPoints: REGION_POINTS, correct: false, skipped: true }
   }
-  const distance = REGION_DISTANCE[guessRegionId]?.[actualRegionId] ?? 4
-  const points = REGION_DISTANCE_POINTS[distance] ?? 0
-  return { points, maxPoints: REGION_POINTS, correct: distance === 0, skipped: false }
+  if (guess.type === 'outside-europe') {
+    const correct = composer.regionId === 'north-america'
+    return { points: correct ? REGION_POINTS : 0, maxPoints: REGION_POINTS, correct, skipped: false }
+  }
+  const truePoint = COMPOSER_MAP_POINTS[composer.id]
+  if (!truePoint) {
+    // Actual answer isn't pictured on this map at all — a map click can't be "close".
+    return { points: 0, maxPoints: REGION_POINTS, correct: false, skipped: false }
+  }
+  const mapDistance = Math.hypot(guess.x - truePoint.x, guess.y - truePoint.y)
+  const points =
+    mapDistance <= REGION_GRACE_DISTANCE
+      ? REGION_POINTS
+      : Math.round(
+          REGION_POINTS *
+            Math.max(0, 1 - (mapDistance - REGION_GRACE_DISTANCE) / (REGION_MAX_DISTANCE - REGION_GRACE_DISTANCE)),
+        )
+  return { points, maxPoints: REGION_POINTS, correct: points === REGION_POINTS, skipped: false, mapDistance }
 }
 
 interface SessionState {
@@ -109,11 +124,13 @@ export function createMockApiClient(): ApiClient {
 
       const composerScore = scoreExactMatch(guess.composerId, composer.id, COMPOSER_POINTS)
       const era = scoreEra(guess.guessedYear, excerpt.yearComposed)
-      const region = scoreRegion(guess.regionId, composer.regionId)
+      const region = scoreRegion(guess.regionGuess, composer)
       const instrumentation = scoreExactMatch(guess.instrumentationId, excerpt.instrumentationId, INSTRUMENTATION_POINTS)
 
-      const roundScore = composerScore.points + era.points + region.points + instrumentation.points
+      const rawRoundScore = composerScore.points + era.points + region.points + instrumentation.points
       const maxRoundScore = composerScore.maxPoints + era.maxPoints + region.maxPoints + instrumentation.maxPoints
+      const evidencePenalty = Math.max(0, guess.cluesRevealed) * EVIDENCE_COST_POINTS
+      const roundScore = Math.max(0, rawRoundScore - evidencePenalty)
 
       const result: RoundResult = {
         correct: {
@@ -128,6 +145,7 @@ export function createMockApiClient(): ApiClient {
         scoreBreakdown: { composer: composerScore, era, region, instrumentation },
         roundScore,
         maxRoundScore,
+        evidencePenalty,
         explanation: {
           summary: excerpt.explanationSummary,
           points: [

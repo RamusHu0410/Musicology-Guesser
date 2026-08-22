@@ -22,7 +22,7 @@ export function StartScreen() {
 
   return (
     <main className="mx-auto flex max-w-lg flex-col items-center gap-6 p-6 pt-24 text-center">
-      <h1 className="text-4xl font-semibold tracking-wide text-ivory">Musicology Guesser</h1>
+      <h1 className="text-5xl font-semibold tracking-wide text-ivory">Musicology Guesser</h1>
       <p className="text-muted">
         You'll see a short excerpt of manuscript and a case file of evidence. Decide the instrumentation, era,
         composer, and region — skip anything you're unsure of for a modest, honest 200 points.

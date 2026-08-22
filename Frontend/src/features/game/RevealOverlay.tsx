@@ -1,9 +1,12 @@
+import { COMPOSER_MAP_POINTS } from '../../api/mockData'
+import { EuropeMap } from '../../components/EuropeMap'
 import { ScoreBar } from '../../components/ScoreBar'
 import { useGameStore } from '../../store/gameStore'
 import { useReferenceStore } from '../../store/referenceStore'
 
 export function RevealOverlay() {
   const currentResult = useGameStore((s) => s.currentResult)
+  const lastGuess = useGameStore((s) => s.lastGuess)
   const nextRound = useGameStore((s) => s.nextRound)
   const currentRoundIndex = useGameStore((s) => s.currentRoundIndex)
   const currentRound = useGameStore((s) => s.rounds[s.currentRoundIndex])
@@ -17,6 +20,8 @@ export function RevealOverlay() {
   const instrumentationName =
     instrumentationCategories.find((c) => c.id === currentResult.correct.instrumentationId)?.name ?? '—'
   const isLastRound = currentRoundIndex >= totalRounds - 1
+  const answerPoint = COMPOSER_MAP_POINTS[currentResult.correct.composerId] ?? null
+  const guessPoint = lastGuess?.regionGuess?.type === 'map' ? lastGuess.regionGuess : null
 
   const clueLabelFor = (clueId: string | null) => {
     if (!clueId) return 'The manuscript'
@@ -27,8 +32,8 @@ export function RevealOverlay() {
   return (
     <div className="fixed inset-0 z-20 flex items-center justify-center overflow-y-auto bg-black/80 p-4">
       <div className="marble-panel w-full max-w-md rounded-sm border border-gold/50 p-6">
-        <h2 className="mb-1 text-xl font-semibold text-ivory">{currentResult.correct.composerName}</h2>
-        <p className="mb-1 text-sm italic text-gold-soft">{currentResult.correct.workTitle}</p>
+        <h2 className="mb-1 text-2xl font-semibold text-ivory">{currentResult.correct.composerName}</h2>
+        <p className="mb-1 text-base italic text-gold-soft">{currentResult.correct.workTitle}</p>
         <p className="mb-4 text-sm text-muted">
           {currentResult.correct.yearComposed} · {regionName} · {instrumentationName}
         </p>
@@ -67,11 +72,24 @@ export function RevealOverlay() {
             skipped={currentResult.scoreBreakdown.region.skipped}
           />
         </div>
-        <p className="mt-4 text-right text-lg font-semibold text-gold">
+
+        {(guessPoint || answerPoint) && (
+          <div className="mt-3">
+            <EuropeMap regions={regions} guessPoint={guessPoint} answerPoint={answerPoint} />
+            {!answerPoint && <p className="mt-1 text-xs text-muted">The true answer lies outside this map.</p>}
+          </div>
+        )}
+
+        {currentResult.evidencePenalty > 0 && (
+          <p className="mt-3 text-sm text-muted">
+            Evidence used: −{currentResult.evidencePenalty} pts
+          </p>
+        )}
+        <p className="mt-2 text-right text-xl font-semibold text-gold">
           {currentResult.roundScore} / {currentResult.maxRoundScore}
         </p>
         <div className="mt-4 border-t border-gold/20 pt-4 text-left">
-          <p className="mb-3 text-sm text-ivory">{currentResult.explanation.summary}</p>
+          <p className="mb-3 text-base text-ivory">{currentResult.explanation.summary}</p>
           <ul className="flex flex-col gap-2">
             {currentResult.explanation.points.map((point, index) => (
               <li key={index} className="text-sm text-muted">

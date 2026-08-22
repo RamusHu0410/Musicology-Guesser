@@ -6,10 +6,10 @@ export function ScoreDisplay() {
   const maxScore = roundResults.reduce((sum, r) => sum + r.maxRoundScore, 0)
 
   return (
-    <div className="rounded-sm border border-gold/40 bg-ink-elevated px-4 py-1.5 text-sm">
-      <span className="text-muted">Score </span>
-      <span className="font-semibold text-gold">{totalScore}</span>
-      <span className="text-muted"> / {maxScore}</span>
+    <div className="flex items-baseline gap-2 rounded-sm border border-gold/40 bg-ink-elevated px-5 py-2">
+      <span className="text-sm uppercase tracking-wide text-muted">Score</span>
+      <span className="text-3xl font-semibold text-gold">{totalScore}</span>
+      <span className="text-lg text-muted">/ {maxScore}</span>
     </div>
   )
 }

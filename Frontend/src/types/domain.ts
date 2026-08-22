@@ -52,13 +52,24 @@ export interface Round {
   clues: Clue[]
 }
 
+export interface MapPoint {
+  x: number
+  y: number
+}
+
+// A pin dropped on the Europe map (continuous, scored by distance like GeoGuessr), or an explicit
+// admission the answer lies outside the pictured map. Absent entirely when the question is skipped.
+export type RegionGuess = { type: 'map'; x: number; y: number } | { type: 'outside-europe' }
+
 // null on any field means the player skipped that question honestly rather than guessing blind —
-// scored with a flat honesty bonus instead of 0 (see mockClient.ts).
+// scored with a flat honesty bonus instead of 0 (see mockClient.ts). cluesRevealed feeds the
+// evidence-usage cost (see RoundResult.evidencePenalty).
 export interface GuessPayload {
   instrumentationId: string | null
   guessedYear: number | null
   composerId: string | null
-  regionId: string | null
+  regionGuess: RegionGuess | null
+  cluesRevealed: number
 }
 
 export interface ScoreEntry {
@@ -67,6 +78,7 @@ export interface ScoreEntry {
   correct: boolean
   skipped: boolean
   yearsOff?: number
+  mapDistance?: number
 }
 
 export interface ExplanationPoint {
@@ -92,6 +104,7 @@ export interface RoundResult {
   }
   roundScore: number
   maxRoundScore: number
+  evidencePenalty: number
   explanation: {
     summary: string
     points: ExplanationPoint[]

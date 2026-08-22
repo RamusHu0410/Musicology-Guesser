@@ -10,6 +10,7 @@ interface GameState {
   rounds: Round[]
   currentRoundIndex: number
   currentResult: RoundResult | null
+  lastGuess: GuessPayload | null
   roundResults: RoundResult[]
   summary: GameSummary | null
   error: string | null
@@ -25,6 +26,7 @@ const initialState = {
   rounds: [] as Round[],
   currentRoundIndex: 0,
   currentResult: null as RoundResult | null,
+  lastGuess: null as GuessPayload | null,
   roundResults: [] as RoundResult[],
   summary: null as GameSummary | null,
   error: null as string | null,
@@ -58,6 +60,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       set((state) => ({
         status: 'revealing',
         currentResult: result,
+        lastGuess: guess,
         roundResults: [...state.roundResults, result],
       }))
     } catch (err) {

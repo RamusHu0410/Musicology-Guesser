@@ -15,9 +15,9 @@ export function SummaryScreen() {
 
   return (
     <main className="mx-auto flex max-w-lg flex-col items-center gap-6 p-6 pt-24 text-center">
-      <h1 className="text-3xl font-semibold tracking-wide text-ivory">Final Score</h1>
-      <p className="text-5xl font-bold text-gold">
-        {summary.totalScore} <span className="text-2xl text-muted">/ {summary.maxScore}</span>
+      <h1 className="text-4xl font-semibold tracking-wide text-ivory">Final Score</h1>
+      <p className="text-6xl font-bold text-gold">
+        {summary.totalScore} <span className="text-3xl text-muted">/ {summary.maxScore}</span>
       </p>
       <div className="flex w-full flex-col gap-2">
         {summary.rounds.map((round, index) => (

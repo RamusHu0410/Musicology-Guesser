@@ -1,4 +1,4 @@
-import type { Composer, InstrumentationCategory, Region } from '../types/domain'
+import type { Composer, InstrumentationCategory, MapPoint, Region } from '../types/domain'
 
 export const REGIONS: Region[] = [
   { id: 'central-europe', name: 'Central Europe' },
@@ -17,24 +17,49 @@ export const INSTRUMENTATION_CATEGORIES: InstrumentationCategory[] = [
   { id: 'chamber', name: 'Chamber Ensemble' },
 ]
 
-// Hand-authored "how close" distance between regions (0 = exact, higher = farther), so a guess on
-// the Europe map that lands on a neighboring region still earns partial credit instead of zero.
-export const REGION_DISTANCE: Record<string, Record<string, number>> = {
-  'western-europe': { 'western-europe': 0, 'central-europe': 1, italy: 1, 'eastern-europe': 2, russia: 3, 'north-america': 4 },
-  'central-europe': { 'western-europe': 1, 'central-europe': 0, italy: 1, 'eastern-europe': 1, russia: 2, 'north-america': 4 },
-  'eastern-europe': { 'western-europe': 2, 'central-europe': 1, italy: 2, 'eastern-europe': 0, russia: 1, 'north-america': 4 },
-  italy: { 'western-europe': 1, 'central-europe': 1, italy: 0, 'eastern-europe': 2, russia: 3, 'north-america': 4 },
-  russia: { 'western-europe': 3, 'central-europe': 2, italy: 3, 'eastern-europe': 1, russia: 0, 'north-america': 4 },
-  'north-america': { 'western-europe': 4, 'central-europe': 4, italy: 4, 'eastern-europe': 4, russia: 4, 'north-america': 0 },
+// Coordinate space the Europe map (EuropeMap.tsx) is drawn in — matches the pixel dimensions of
+// europe-map.png so pin-drop distance scoring lines up with what's on screen.
+export const MAP_VIEW_WIDTH = 570
+export const MAP_VIEW_HEIGHT = 570
+
+// A plain equirectangular projection over the lon/lat box europe-map.png covers (Iceland down to
+// Crete, the mid-Atlantic to the Baltic states — estimated from the image's visible coastlines,
+// not exact survey bounds). Good enough for a game at this scale — real coordinates rather than
+// hand-guessed pixels, and it's what lets this map eventually take real lat/lon from a backend
+// (see Documents/API_CONTRACT.md's `locationGuess` proposal).
+const LON_MIN = -30
+const LON_MAX = 40
+const LAT_MIN = 35
+const LAT_MAX = 71
+
+export function projectLatLon(lat: number, lon: number): MapPoint {
+  return {
+    x: ((lon - LON_MIN) / (LON_MAX - LON_MIN)) * MAP_VIEW_WIDTH,
+    y: ((LAT_MAX - lat) / (LAT_MAX - LAT_MIN)) * MAP_VIEW_HEIGHT,
+  }
 }
 
-export const REGION_DISTANCE_POINTS: Record<number, number> = {
-  0: 500,
-  1: 300,
-  2: 150,
-  3: 50,
-  4: 0,
+// Real coordinates for each composer's home/working city — the same cities the backend's
+// GET /api/cities carries, so this map lines up with actual geography rather than a guess.
+const COMPOSER_CITY_COORDS: Record<string, { lat: number; lon: number }> = {
+  'bach-js': { lat: 51.7519, lon: 11.97 }, // Köthen
+  'handel-gf': { lat: 51.5074, lon: -0.1278 }, // London
+  'vivaldi-a': { lat: 45.4408, lon: 12.3155 }, // Venice
+  'mozart-wa': { lat: 48.2082, lon: 16.3738 }, // Vienna
+  'haydn-fj': { lat: 48.2082, lon: 16.3738 }, // Vienna
+  'beethoven-l': { lat: 50.7374, lon: 7.0982 }, // Bonn
+  'chopin-f': { lat: 39.7097, lon: 2.6225 }, // Valldemossa
+  'brahms-j': { lat: 53.5511, lon: 9.9937 }, // Hamburg
+  'tchaikovsky-p': { lat: 55.7558, lon: 37.6173 }, // Moscow
+  'debussy-c': { lat: 48.8566, lon: 2.3522 }, // Paris
+  'stravinsky-i': { lat: 59.9311, lon: 30.3609 }, // Saint Petersburg
 }
+
+// Composers based outside Europe (Copland, Glass) intentionally have no entry: the map itself
+// doesn't picture them, so they're guessed via the separate "outside Europe" control instead.
+export const COMPOSER_MAP_POINTS: Record<string, MapPoint> = Object.fromEntries(
+  Object.entries(COMPOSER_CITY_COORDS).map(([composerId, { lat, lon }]) => [composerId, projectLatLon(lat, lon)]),
+)
 
 // era/regionId describe the composer, not the individual work — they're the authoritative
 // answer key for those two scoring axes (see API_CONTRACT.md §1).

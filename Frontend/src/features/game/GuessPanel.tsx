@@ -4,13 +4,15 @@ import { ComposerSearch } from '../../components/ComposerSearch'
 import { EraTimelineSlider } from '../../components/EraTimelineSlider'
 import { EuropeMap } from '../../components/EuropeMap'
 import { TIMELINE_MAX_YEAR, TIMELINE_MIN_YEAR } from '../../constants/eras'
-import type { Composer, GuessPayload, InstrumentationCategory, Region } from '../../types/domain'
+import type { Composer, GuessPayload, InstrumentationCategory, RegionGuess, Region } from '../../types/domain'
+
+type SubmittedGuess = Omit<GuessPayload, 'cluesRevealed'>
 
 interface GuessPanelProps {
   composers: Composer[]
   regions: Region[]
   instrumentationCategories: InstrumentationCategory[]
-  onSubmit: (guess: GuessPayload) => void
+  onSubmit: (guess: SubmittedGuess) => void
   disabled?: boolean
 }
 
@@ -33,7 +35,7 @@ interface Answers {
   instrumentationId: string | null
   guessedYear: number | null
   composerId: string | null
-  regionId: string | null
+  regionGuess: RegionGuess | null
 }
 
 export function GuessPanel({ composers, regions, instrumentationCategories, onSubmit, disabled }: GuessPanelProps) {
@@ -42,7 +44,7 @@ export function GuessPanel({ composers, regions, instrumentationCategories, onSu
     instrumentationId: null,
     guessedYear: null,
     composerId: null,
-    regionId: null,
+    regionGuess: null,
   })
   const [draftYear, setDraftYear] = useState(DEFAULT_YEAR)
 
@@ -71,7 +73,7 @@ export function GuessPanel({ composers, regions, instrumentationCategories, onSu
         commit({ composerId: null })
         break
       case 'region':
-        commit({ regionId: null })
+        commit({ regionGuess: null })
         break
     }
   }
@@ -87,7 +89,8 @@ export function GuessPanel({ composers, regions, instrumentationCategories, onSu
       case 'composer':
         return answers.composerId ? composers.find((c) => c.id === answers.composerId)?.name ?? '—' : 'Skipped'
       case 'region':
-        return answers.regionId ? regions.find((r) => r.id === answers.regionId)?.name ?? '—' : 'Skipped'
+        if (!answers.regionGuess) return 'Skipped'
+        return answers.regionGuess.type === 'outside-europe' ? 'Outside Europe' : 'Pin dropped'
     }
   }
 
@@ -98,7 +101,7 @@ export function GuessPanel({ composers, regions, instrumentationCategories, onSu
       }`}
     >
       {stepIndex > 0 && (
-        <ul className="flex flex-col gap-1 border-b border-gold/20 pb-3 text-xs text-muted">
+        <ul className="flex flex-col gap-1 border-b border-gold/20 pb-3 text-sm text-muted">
           {STEP_ORDER.slice(0, stepIndex).map((step) => (
             <li key={step} className="flex justify-between">
               <span>{STEP_TITLES[step]}</span>
@@ -108,11 +111,11 @@ export function GuessPanel({ composers, regions, instrumentationCategories, onSu
         </ul>
       )}
 
-      <div className="flex items-center justify-between text-xs uppercase tracking-wide text-muted">
+      <div className="flex items-center justify-between text-sm uppercase tracking-wide text-muted">
         <span>
           Question {stepIndex + 1} of {STEP_ORDER.length}
         </span>
-        <span className="text-gold">{STEP_TITLES[currentStep]}</span>
+        <span className="text-lg text-gold">{STEP_TITLES[currentStep]}</span>
       </div>
 
       {currentStep === 'instrumentation' && (
@@ -142,15 +145,15 @@ export function GuessPanel({ composers, regions, instrumentationCategories, onSu
       )}
 
       {currentStep === 'region' && (
-        <EuropeMap regions={regions} value={answers.regionId} onChange={(id) => commit({ regionId: id })} />
+        <EuropeMap regions={regions} value={answers.regionGuess} onChange={(guess) => commit({ regionGuess: guess })} />
       )}
 
       <button
         type="button"
         onClick={skipCurrent}
-        className="self-start text-xs uppercase tracking-wide text-muted underline-offset-2 hover:text-gold hover:underline"
+        className="self-start rounded-sm border border-muted/40 px-3 py-1.5 text-sm uppercase tracking-wide text-muted hover:border-gold hover:text-gold"
       >
-        Skip — take 200 points for honesty
+        Skip this question — take 200 points for honesty
       </button>
     </div>
   )

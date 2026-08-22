@@ -8,6 +8,14 @@ loop is built around them.
 Base path assumed: `/api`. Format: JSON over HTTPS. No auth assumed yet (add a session/user id
 later if accounts are needed).
 
+> **Frontend proposal, pending backend review** — the sections below (§3 guess request/response,
+> Resolved, Open questions) have been updated to describe four mechanics just built on the
+> frontend: (1) any of the four guess fields can be skipped for a flat honesty bonus, (2) the
+> location guess is now a dropped pin (lat/lon) scored by distance rather than a `cityId` pick,
+> (3) revealing evidence now costs points, tracked via `cluesRevealed`. None of this is live against
+> a real backend yet — it's all served by a frontend mock. Flagging here so whoever picks up the
+> Java side isn't surprised by the shape.
+
 ---
 
 ## 0. Health
@@ -136,10 +144,11 @@ Notes:
 Request:
 ```json
 {
-  "composerId": "chopin-f",
+  "composerId": null,
   "guessedYear": 1840,
-  "cityId": "valldemossa",
-  "instrumentationId": "solo-piano"
+  "locationGuess": { "type": "pin", "lat": 39.71, "lon": 2.62 },
+  "instrumentationId": "solo-piano",
+  "cluesRevealed": 1
 }
 ```
 Response:
@@ -156,13 +165,14 @@ Response:
     "instrumentationId": "solo-piano"
   },
   "scoreBreakdown": {
-    "composer": { "points": 500, "maxPoints": 500, "correct": true },
+    "composer": { "points": 200, "maxPoints": 500, "correct": false, "skipped": true },
     "era": { "points": 480, "maxPoints": 500, "correct": true, "yearsOff": 2 },
-    "city": { "points": 500, "maxPoints": 500, "correct": true },
+    "location": { "points": 500, "maxPoints": 500, "correct": true, "distanceKm": 0.4 },
     "instrumentation": { "points": 500, "maxPoints": 500, "correct": true }
   },
-  "roundScore": 1980,
+  "roundScore": 1080,
   "maxRoundScore": 2000,
+  "evidencePenalty": 100,
   "explanation": {
     "summary": "Every piece of evidence points to Chopin in the years around 1838.",
     "points": [
@@ -174,23 +184,44 @@ Response:
 }
 ```
 Notes:
+- **Any field can be `null` — the player skipped that question rather than guessing blind.** A
+  skipped field always scores a flat 200-point honesty bonus (`skipped: true`, `correct: false`),
+  which beats a wrong guess (0) but loses to a right one (500). This resolves the old "partial
+  guesses — TBD" note: partial guesses are now the norm, not an edge case, since the UI asks the
+  four questions one at a time and lets the player skip any of them.
+- **`locationGuess` replaces `cityId`.** Instead of picking from `GET /api/cities`, the frontend
+  now shows a map and lets the player drop a pin anywhere, like GeoGuessr — `{ "type": "pin", "lat", "lon" }`.
+  A player can also explicitly say the work wasn't written anywhere on the pictured map via
+  `{ "type": "outside-map" }` (today that's just "outside Europe"). `GET /api/cities` and its
+  lat/lon data don't go away — they're exactly what `location` scoring needs: distance in km
+  (haversine, or an equirectangular approximation is probably fine given how small the map is)
+  between the dropped pin and the correct work's coordinates, decaying like era scoring (full
+  credit within a small radius, 0 past some max distance — frontend currently uses a 15/260 unit
+  grace/max window in its own local coordinate space as a placeholder, not real km).
+  `distanceKm` on the response mirrors `yearsOff` — a number for the reveal UI to show, not used
+  for anything else client-side.
 - `explanation` is the educational payoff of the round: it is returned on every guess, right or
   wrong, and should be rendered on the reveal screen. Each entry in `points` ties back to a clue
   via `clueId` so the UI can show the reasoning next to the evidence it came from; `clueId` is
   `null` for points about the manuscript image itself.
 - `workTitle` is what the excerpt actually is, for the reveal screen.
-- `era` describes the composer. `yearComposed` and `cityId` describe **this work**: where and when
-  it was written. Chopin's Op. 28 No. 15 scores as Valldemossa, because that is where he wrote it,
-  even though he was Polish and lived in Paris.
+- `era` describes the composer. `yearComposed` and the correct city describe **this work**: where
+  and when it was written. Chopin's Op. 28 No. 15 scores as Valldemossa, because that is where he
+  wrote it, even though he was Polish and lived in Paris.
 - `cityName` is included alongside `cityId` so the reveal screen does not have to look it up.
 - **Backend owns scoring**, not the frontend. This keeps scoring consistent/tamper-resistant and
   lets scoring rules evolve without a frontend redeploy. Frontend just renders whatever breakdown
   comes back.
 - `era` scoring is distance-based (closer guessed year → more points, like GeoGuessr's map
   distance), hence `yearsOff` — useful for the reveal UI to show "off by N years."
-- `roundScore` is the sum of the four axes. Opening clues does not change the score.
-- Any field can be omitted from the guess request if we support partial guesses — TBD, default
-  assumption is all four fields are required before submit is enabled.
+- **`cluesRevealed` is new**: how many evidence cards the player opened before submitting.
+  `evidencePenalty = 100 × cluesRevealed`, subtracted from the sum of the four axes to get
+  `roundScore` (floored at 0; `maxRoundScore` is unaffected, so using evidence lowers your actual
+  score but not your ceiling). Right now the frontend just counts client-side clicks and reports
+  the number — worth discussing whether backend should track clue reveals itself (a
+  `POST /rounds/{roundId}/reveal-clue` call per clue) instead of trusting a client-reported count,
+  since as written a modified client could just always send `cluesRevealed: 0`.
+- `roundScore` is the sum of the four axes minus `evidencePenalty`.
 
 ---
 
@@ -264,10 +295,19 @@ should key off the `error` string rather than the status code.
 - **There is no database.** Content is a folder of JSON files; sessions are in memory.
 - **`/summary` returns each round's composer and work title**, alongside the scores, for the
   end-of-game recap. Additive: the original three fields are unchanged.
-- **The guess sends a `cityId`, scored as an exact match.** True GeoGuessr scoring — a map pin
-  scored by kilometres from the real location — is deferred, not rejected. The cities already
-  carry coordinates, so the data is ready if the frontend wants to move to a lat/lon pair later.
-  `GET /api/cities` stays either way, since the map needs coordinates to place markers.
+- **The location guess is now a dropped pin, not a `cityId` pick.** This is the "deferred, not
+  rejected" GeoGuessr-style scoring called out in the previous revision of this doc — the frontend
+  has moved to it. `GET /api/cities` still stands as the source of truth for each case's correct
+  coordinates; only the guess request's shape changed.
+- **Any of the four guess fields can be skipped (`null`) for a flat 200-point honesty bonus.**
+  Resolves the old "partial guesses — TBD" question: partial guesses are the expected path now,
+  not an exception, since the UI asks instrumentation, era, composer, and location one at a time
+  and lets the player skip any of them.
+- **Revealing evidence costs points.** 100 points per clue, deducted from `roundScore` (not
+  `maxRoundScore`) as `evidencePenalty`.
+- **The question order is instrumentation → era → composer → location, one at a time.** This is a
+  frontend-only sequencing choice and doesn't change the request shape — it's still one POST with
+  all four fields (or nulls) once the player finishes or skips through all four.
 
 ## Open questions for backend
 
@@ -275,3 +315,15 @@ should key off the `error` string rather than the status code.
 - Some works resist a single `instrumentationId` (is a piano concerto `solo-piano` or
   `orchestral`?). Backend picks one canonical category per work; flag if the UI needs to accept
   either.
+- Should `evidencePenalty` be backend-computed from a trusted server-side count (e.g. a
+  `POST /rounds/{roundId}/reveal-clue` call per clue) instead of the client-reported
+  `cluesRevealed` in the guess request? As specified, a modified client could under-report it.
+- For pin-drop distance scoring: haversine (real great-circle km) or a flat equirectangular
+  approximation? Given the map only covers Europe, the approximation error is probably small
+  enough not to matter, but worth a decision either way.
+- The frontend's current map is a simplified schematic (rough country shapes, not real borders),
+  and today it scores purely in its own local pixel coordinate space — it does **not** yet convert
+  clicks to real lat/lon, so the request/response shapes above (`lat`/`lon`, `distanceKm`) describe
+  the target shape, not what's wired up yet. Converting pixel position to an approximate lat/lon
+  (or switching to a real geo-projected map image) is the next step before this can talk to a real
+  backend using `GET /api/cities`' coordinates.

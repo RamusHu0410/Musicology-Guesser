@@ -18,7 +18,7 @@ interface EvidenceCardProps {
 
 export function EvidenceCard({ clue }: EvidenceCardProps) {
   return (
-    <div className="rounded-sm border border-gold/25 bg-ink p-3">
+    <div className="rounded-sm border border-gold/25 bg-ink-soft p-3">
       <div className="mb-1 flex items-center justify-between text-xs uppercase tracking-wide text-muted">
         <span>{TYPE_LABELS[clue.type] ?? 'Evidence'}</span>
         <span>#{clue.order}</span>

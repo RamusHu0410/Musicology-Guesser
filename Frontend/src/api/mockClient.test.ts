@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { createMockApiClient } from './mockClient'
-import { COMPOSERS, getExcerpt, REGION_DISTANCE } from './mockData'
+import { COMPOSER_MAP_POINTS, getExcerpt } from './mockData'
 import type { ApiClient } from './client'
 
 describe('mock API client', () => {
@@ -22,13 +22,12 @@ describe('mock API client', () => {
     const composers = await client.getComposers()
     const excerptComposerId = composers[0].id
 
-    // Guess the same composer whose excerpt seed matches round order to sanity-check plumbing;
-    // pull the true answer indirectly by submitting the first composer and checking shape instead.
     const result = await client.submitGuess(session.sessionId, round.roundId, {
       composerId: excerptComposerId,
       guessedYear: 1800,
-      regionId: composers[0].regionId,
+      regionGuess: { type: 'map', x: 200, y: 150 },
       instrumentationId: 'solo-piano',
+      cluesRevealed: 0,
     })
 
     expect(result.roundScore).toBeGreaterThanOrEqual(0)
@@ -39,7 +38,13 @@ describe('mock API client', () => {
   it('rejects guessing the same round twice', async () => {
     const session = await client.startGame(1)
     const round = session.rounds[0]
-    const guess = { composerId: 'bach-js', guessedYear: 1720, regionId: 'central-europe', instrumentationId: 'chamber' }
+    const guess = {
+      composerId: 'bach-js',
+      guessedYear: 1720,
+      regionGuess: { type: 'outside-europe' } as const,
+      instrumentationId: 'chamber',
+      cluesRevealed: 0,
+    }
 
     await client.submitGuess(session.sessionId, round.roundId, guess)
     await expect(client.submitGuess(session.sessionId, round.roundId, guess)).rejects.toThrow(
@@ -53,41 +58,66 @@ describe('mock API client', () => {
     const result = await client.submitGuess(session.sessionId, round.roundId, {
       composerId: null,
       guessedYear: null,
-      regionId: null,
+      regionGuess: null,
       instrumentationId: null,
+      cluesRevealed: 0,
     })
 
     expect(result.roundScore).toBe(800) // 200 honesty bonus x 4 categories
     expect(Object.values(result.scoreBreakdown).every((entry) => entry.skipped)).toBe(true)
   })
 
-  it('awards partial credit for a region guess that is close but not exact', async () => {
-    // Start every round so the test doesn't depend on which excerpt the shuffle happens to pick.
+  it('awards full region marks for a pin dropped exactly on the true location', async () => {
     const session = await client.startGame(13)
-    let tested = false
+    const round = session.rounds.find((r) => COMPOSER_MAP_POINTS[getExcerpt(r.roundId)!.composerId])!
+    const excerpt = getExcerpt(round.roundId)!
+    const truePoint = COMPOSER_MAP_POINTS[excerpt.composerId]
 
-    for (const round of session.rounds) {
-      const excerpt = getExcerpt(round.roundId)!
-      const composer = COMPOSERS.find((c) => c.id === excerpt.composerId)!
-      const neighborRegionId = Object.entries(REGION_DISTANCE[composer.regionId]).find(
-        ([, distance]) => distance === 1,
-      )?.[0]
-      if (!neighborRegionId) continue
+    const result = await client.submitGuess(session.sessionId, round.roundId, {
+      composerId: null,
+      guessedYear: null,
+      regionGuess: { type: 'map', x: truePoint.x, y: truePoint.y },
+      instrumentationId: null,
+      cluesRevealed: 0,
+    })
 
-      const result = await client.submitGuess(session.sessionId, round.roundId, {
-        composerId: null,
-        guessedYear: null,
-        regionId: neighborRegionId,
-        instrumentationId: null,
-      })
-      expect(result.scoreBreakdown.region.correct).toBe(false)
-      expect(result.scoreBreakdown.region.skipped).toBe(false)
-      expect(result.scoreBreakdown.region.points).toBe(300)
-      tested = true
-      break
-    }
+    expect(result.scoreBreakdown.region.correct).toBe(true)
+    expect(result.scoreBreakdown.region.points).toBe(500)
+  })
 
-    expect(tested).toBe(true)
+  it('gives partial region credit that decays with map distance', async () => {
+    const session = await client.startGame(13)
+    const round = session.rounds.find((r) => COMPOSER_MAP_POINTS[getExcerpt(r.roundId)!.composerId])!
+    const excerpt = getExcerpt(round.roundId)!
+    const truePoint = COMPOSER_MAP_POINTS[excerpt.composerId]
+
+    const result = await client.submitGuess(session.sessionId, round.roundId, {
+      composerId: null,
+      guessedYear: null,
+      regionGuess: { type: 'map', x: truePoint.x + 60, y: truePoint.y },
+      instrumentationId: null,
+      cluesRevealed: 0,
+    })
+
+    expect(result.scoreBreakdown.region.correct).toBe(false)
+    expect(result.scoreBreakdown.region.points).toBeGreaterThan(0)
+    expect(result.scoreBreakdown.region.points).toBeLessThan(500)
+  })
+
+  it('deducts 100 points per clue used from the round score', async () => {
+    const session = await client.startGame(1)
+    const round = session.rounds[0]
+
+    const result = await client.submitGuess(session.sessionId, round.roundId, {
+      composerId: 'bach-js',
+      guessedYear: 1720,
+      regionGuess: { type: 'outside-europe' },
+      instrumentationId: 'chamber',
+      cluesRevealed: 2,
+    })
+
+    expect(result.evidencePenalty).toBe(200)
+    expect(result.roundScore).toBeGreaterThanOrEqual(0)
   })
 
   it('produces a summary whose total matches the sum of round scores', async () => {
@@ -96,8 +126,9 @@ describe('mock API client', () => {
       await client.submitGuess(session.sessionId, round.roundId, {
         composerId: 'bach-js',
         guessedYear: 1720,
-        regionId: 'central-europe',
+        regionGuess: { type: 'outside-europe' },
         instrumentationId: 'chamber',
+        cluesRevealed: 0,
       })
     }
     const summary = await client.getSummary(session.sessionId)

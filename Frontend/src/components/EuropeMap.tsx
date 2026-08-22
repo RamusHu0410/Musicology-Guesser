@@ -1,95 +1,83 @@
-import type { Region } from '../types/domain'
+import { useRef } from 'react'
+import europeMapImage from '../assets/europe-map.png'
+import { MAP_VIEW_HEIGHT, MAP_VIEW_WIDTH } from '../api/mockData'
+import type { MapPoint, Region, RegionGuess } from '../types/domain'
 
 interface EuropeMapProps {
   regions: Region[]
-  value: string | null
-  onChange: (regionId: string) => void
+  /** Interactive mode: current guess (or null) and a setter. Omit both for read-only reveal mode. */
+  value?: RegionGuess | null
+  onChange?: (guess: RegionGuess) => void
+  /** Reveal mode: the player's already-submitted pin and the true location, connected by a line. */
+  guessPoint?: MapPoint | null
+  answerPoint?: MapPoint | null
 }
 
-// Stylized, not cartographic — a schematic engraving-style layout, not real borders.
-const MAP_REGIONS: Record<string, { x: number; y: number; width: number; height: number; rx: number }> = {
-  'western-europe': { x: 10, y: 100, width: 95, height: 150, rx: 36 },
-  'central-europe': { x: 115, y: 65, width: 90, height: 130, rx: 30 },
-  italy: { x: 140, y: 205, width: 32, height: 105, rx: 15 },
-  'eastern-europe': { x: 215, y: 100, width: 90, height: 130, rx: 30 },
-  russia: { x: 215, y: 12, width: 135, height: 78, rx: 20 },
-}
-
-const VIEW_WIDTH = 360
-const VIEW_HEIGHT = 320
-
-export function EuropeMap({ regions, value, onChange }: EuropeMapProps) {
-  const europeRegions = regions.filter((region) => region.id !== 'north-america')
+export function EuropeMap({ regions, value, onChange, guessPoint, answerPoint }: EuropeMapProps) {
+  const svgRef = useRef<SVGSVGElement>(null)
+  const isInteractive = Boolean(onChange)
   const outsideEurope = regions.find((region) => region.id === 'north-america')
+  const guessMarker = value?.type === 'map' ? value : guessPoint ?? null
+  const isOutsideEuropeSelected = value?.type === 'outside-europe'
+
+  function handleMapClick(event: React.MouseEvent<SVGSVGElement>) {
+    if (!onChange || !svgRef.current) return
+    const rect = svgRef.current.getBoundingClientRect()
+    const x = ((event.clientX - rect.left) / rect.width) * MAP_VIEW_WIDTH
+    const y = ((event.clientY - rect.top) / rect.height) * MAP_VIEW_HEIGHT
+    onChange({ type: 'map', x, y })
+  }
 
   return (
     <div>
-      <p className="mb-2 text-sm text-muted">Region</p>
-      <div className="rounded-sm border border-gold/40 bg-ink-elevated p-3">
-        <svg viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`} className="w-full" role="group" aria-label="Region">
+      {isInteractive && <p className="mb-2 text-base text-muted">Region — click the map to drop a pin</p>}
+      <div className="rounded-sm border border-gold/50 bg-[#dcecec] p-3">
+        <svg
+          ref={svgRef}
+          viewBox={`0 0 ${MAP_VIEW_WIDTH} ${MAP_VIEW_HEIGHT}`}
+          className={`w-full ${isInteractive ? 'cursor-crosshair' : ''}`}
+          onClick={isInteractive ? handleMapClick : undefined}
+          role={isInteractive ? 'button' : 'img'}
+          aria-label="Region"
+        >
+          <image href={europeMapImage} x={0} y={0} width={MAP_VIEW_WIDTH} height={MAP_VIEW_HEIGHT} preserveAspectRatio="none" />
           <rect
-            x={2}
-            y={2}
-            width={VIEW_WIDTH - 4}
-            height={VIEW_HEIGHT - 4}
-            rx={6}
+            x={1}
+            y={1}
+            width={MAP_VIEW_WIDTH - 2}
+            height={MAP_VIEW_HEIGHT - 2}
+            rx={4}
             fill="none"
-            stroke="rgba(201,162,39,0.25)"
+            stroke="rgba(147,112,29,0.35)"
             strokeWidth={1}
           />
-          <text x={VIEW_WIDTH / 2} y={20} textAnchor="middle" className="fill-gold" style={{ fontSize: 12, letterSpacing: 2 }}>
-            EUROPE
-          </text>
-          {europeRegions.map((region) => {
-            const shape = MAP_REGIONS[region.id]
-            if (!shape) return null
-            const isSelected = value === region.id
-            return (
-              <g
-                key={region.id}
-                onClick={() => onChange(region.id)}
-                role="button"
-                aria-pressed={isSelected}
-                tabIndex={0}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') onChange(region.id)
-                }}
-                className="cursor-pointer"
-              >
-                <rect
-                  x={shape.x}
-                  y={shape.y}
-                  width={shape.width}
-                  height={shape.height}
-                  rx={shape.rx}
-                  fill={isSelected ? 'rgba(201,162,39,0.35)' : 'rgba(255,255,255,0.03)'}
-                  stroke={isSelected ? '#e2c766' : 'rgba(154,149,138,0.5)'}
-                  strokeWidth={isSelected ? 1.5 : 1}
-                />
-                <text
-                  x={shape.x + shape.width / 2}
-                  y={shape.y + shape.height / 2}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  className={isSelected ? 'fill-gold-soft' : 'fill-ivory'}
-                  style={{ fontSize: 11 }}
-                >
-                  {region.name}
-                </text>
-              </g>
-            )
-          })}
+
+          {answerPoint && guessMarker && (
+            <line
+              x1={guessMarker.x}
+              y1={guessMarker.y}
+              x2={answerPoint.x}
+              y2={answerPoint.y}
+              stroke="#93701d"
+              strokeWidth={1.5}
+              strokeDasharray="4 3"
+            />
+          )}
+          {guessMarker && (
+            <circle cx={guessMarker.x} cy={guessMarker.y} r={6} fill="#93701d" stroke="#fdfbf3" strokeWidth={2} />
+          )}
+          {answerPoint && (
+            <circle cx={answerPoint.x} cy={answerPoint.y} r={7} fill="none" stroke="#93701d" strokeWidth={2.5} />
+          )}
         </svg>
       </div>
-      {outsideEurope && (
+      {outsideEurope && isInteractive && (
         <button
           type="button"
-          aria-pressed={value === outsideEurope.id}
-          onClick={() => onChange(outsideEurope.id)}
+          aria-pressed={isOutsideEuropeSelected}
+          onClick={() => onChange?.({ type: 'outside-europe' })}
           className={`mt-2 w-full rounded-sm border px-3 py-1.5 text-xs uppercase tracking-wide transition-colors ${
-            value === outsideEurope.id
-              ? 'border-gold bg-gold/20 text-gold-soft'
-              : 'border-gold/30 text-muted hover:border-gold/60'
+            isOutsideEuropeSelected ? 'border-gold bg-gold/20 text-gold-soft' : 'border-gold/30 text-muted hover:border-gold/60'
           }`}
         >
           Not pictured — {outsideEurope.name}

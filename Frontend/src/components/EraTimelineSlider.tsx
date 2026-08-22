@@ -48,7 +48,7 @@ export function EraTimelineSlider({ value, onChange }: EraTimelineSliderProps) {
               key={band.id}
               title={band.name}
               className="h-full flex-1 border-r border-ink last:border-r-0"
-              style={{ backgroundColor: `rgba(201, 162, 39, ${0.18 + (index / (ERA_BANDS.length - 1)) * 0.62})` }}
+              style={{ backgroundColor: `rgba(147, 112, 29, ${0.25 + (index / (ERA_BANDS.length - 1)) * 0.6})` }}
             />
           ))}
         </div>
