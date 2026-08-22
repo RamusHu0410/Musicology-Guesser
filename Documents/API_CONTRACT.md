@@ -219,13 +219,13 @@ rather than the status code.
   `correct` on that axis means within 5 years. Composer, city and instrumentation are
   all-or-nothing.
 - **There is no database.** Content is a folder of JSON files; sessions are in memory.
+- **The guess sends a `cityId`, scored as an exact match.** True GeoGuessr scoring — a map pin
+  scored by kilometres from the real location — is deferred, not rejected. The cities already
+  carry coordinates, so the data is ready if the frontend wants to move to a lat/lon pair later.
+  `GET /api/cities` stays either way, since the map needs coordinates to place markers.
 
 ## Open questions for backend
 
-- Should the city axis move to true GeoGuessr scoring — a map pin scored by kilometres from the
-  real location — instead of exact match on a city from the list? The cities already carry
-  coordinates, so the data is ready; it would change `cityId` in the guess request to a lat/lon
-  pair, which is why it needs agreeing first.
 - `difficulty` on `/game/start` has no defined effect yet — backend accepts and ignores it.
 - Should `/summary` also return each round's correct composer, for an end-of-game recap screen?
   It currently returns scores only.
