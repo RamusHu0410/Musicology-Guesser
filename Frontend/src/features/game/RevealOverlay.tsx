@@ -106,7 +106,7 @@ export function RevealOverlay() {
           <button
             type="button"
             onClick={nextRound}
-            className="w-full rounded-sm bg-gold px-4 py-2.5 font-medium text-ink hover:bg-gold-soft"
+            className="w-full rounded-sm bg-gold px-4 py-2.5 font-medium text-gold-pale transition-colors hover:bg-gold-pale hover:text-gold"
           >
             {isLastRound ? 'See results' : 'Next round'}
           </button>

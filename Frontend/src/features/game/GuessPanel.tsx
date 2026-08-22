@@ -133,7 +133,7 @@ export function GuessPanel({ composers, regions, instrumentationCategories, onSu
           <button
             type="button"
             onClick={() => commit({ guessedYear: draftYear })}
-            className="rounded-sm bg-gold px-4 py-2 font-medium text-ink hover:bg-gold-soft"
+            className="rounded-sm bg-gold px-4 py-2 font-medium text-gold-pale transition-colors hover:bg-gold-pale hover:text-gold"
           >
             Confirm year
           </button>

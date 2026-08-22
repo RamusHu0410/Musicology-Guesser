@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { apiClient } from '../api'
+import { useCollectionStore } from './collectionStore'
 import type { GameSummary, GuessPayload, Round, RoundResult } from '../types/domain'
 
 type GameStatus = 'idle' | 'loading' | 'playing' | 'revealing' | 'summary' | 'error'
@@ -57,6 +58,16 @@ export const useGameStore = create<GameState>((set, get) => ({
     if (!sessionId || !round) return
     try {
       const result = await apiClient.submitGuess(sessionId, round.roundId, guess)
+      useCollectionStore.getState().recordPiece({
+        caseNumber: round.caseNumber,
+        composerId: result.correct.composerId,
+        composerName: result.correct.composerName,
+        workTitle: result.correct.workTitle,
+        era: result.correct.era,
+        yearComposed: result.correct.yearComposed,
+        roundScore: result.roundScore,
+        maxRoundScore: result.maxRoundScore,
+      })
       set((state) => ({
         status: 'revealing',
         currentResult: result,

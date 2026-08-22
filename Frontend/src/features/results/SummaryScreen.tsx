@@ -41,7 +41,7 @@ export function SummaryScreen() {
             reset()
             navigate('/')
           }}
-          className="rounded-sm bg-gold px-6 py-3 font-medium text-ink hover:bg-gold-soft"
+          className="rounded-sm bg-gold px-6 py-3 font-medium text-gold-pale transition-colors hover:bg-gold-pale hover:text-gold"
         >
           Play again
         </button>
