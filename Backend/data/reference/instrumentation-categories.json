@@ -1,0 +1,6 @@
+[
+  { "id": "solo-piano",     "name": "Solo Piano" },
+  { "id": "string-quartet", "name": "String Quartet" },
+  { "id": "orchestral",     "name": "Orchestral" },
+  { "id": "vocal-opera",    "name": "Vocal / Opera" }
+]

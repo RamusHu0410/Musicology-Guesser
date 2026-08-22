@@ -1,0 +1,57 @@
+{
+  "id": "case-019",
+  "caseNumber": 19,
+  "composerId": "beethoven-l",
+  "workTitle": "String Quartet No. 14 in C-sharp minor, Op. 131",
+  "yearComposed": 1826,
+  "cityId": "vienna",
+  "instrumentationId": "string-quartet",
+  "manuscript": "case-019.svg",
+  "clues": [
+    {
+      "order": 1,
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "The work runs seven movements without a break, and opens not with the expected fast movement but with a slow fugue.",
+      "attribution": null
+    },
+    {
+      "order": 2,
+      "type": "place",
+      "label": "Places the composer lived and worked",
+      "text": "The composer was born in a Rhineland town but spent his entire adult career in one imperial capital to the east, changing lodgings there dozens of times.",
+      "attribution": null
+    },
+    {
+      "order": 3,
+      "type": "historical-event",
+      "label": "A historical event connected to the composer",
+      "text": "In 1802, despairing at his worsening hearing, the composer wrote a private document addressed to his brothers while staying in a village outside the city. It was not found until after his death.",
+      "attribution": null
+    },
+    {
+      "order": 4,
+      "type": "biographical",
+      "label": "A biographical detail",
+      "text": "By the time this work was written the composer was effectively deaf and conducted his conversations with visitors in writing, in notebooks that survive.",
+      "attribution": null
+    },
+    {
+      "order": 5,
+      "type": "anecdote",
+      "label": "An anecdote",
+      "text": "At the first performance of his ninth symphony, two years before this quartet, the composer stood beating time to music he could not hear. One of the soloists had to turn him round at the end so that he could see the audience applauding.",
+      "attribution": null
+    }
+  ],
+  "explanation": {
+    "summary": "The deafness, the seven linked movements, and the Bonn-to-Vienna path all identify Ludwig van Beethoven, writing in Vienna in 1826.",
+    "points": [
+      { "clueOrder": 1, "text": "Seven linked movements beginning with a fugue describes the C-sharp minor Quartet, Op. 131." },
+      { "clueOrder": 2, "text": "The Rhineland town is Bonn and the imperial capital is Vienna, where he lived from 1792 until his death and where this quartet was written." },
+      { "clueOrder": 3, "text": "The 1802 document is the Heiligenstadt Testament, written in what was then a village north of Vienna." },
+      { "clueOrder": 4, "text": "Total deafness in the final decade, and the surviving conversation books, are the most distinctive biographical facts available." },
+      { "clueOrder": 5, "text": "The premiere of the Ninth Symphony took place in Vienna in May 1824; the singer who turned him to face the applause is generally named as Caroline Unger." }
+    ]
+  }
+}

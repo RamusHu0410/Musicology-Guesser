@@ -1,0 +1,57 @@
+{
+  "id": "case-021",
+  "caseNumber": 21,
+  "composerId": "schubert-f",
+  "workTitle": "Winterreise, D. 911",
+  "yearComposed": 1827,
+  "cityId": "vienna",
+  "instrumentationId": "vocal-opera",
+  "manuscript": "case-021.svg",
+  "clues": [
+    {
+      "order": 1,
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "The cycle sets twenty-four poems by Wilhelm Müller, following a rejected traveller out into a winter landscape.",
+      "attribution": null
+    },
+    {
+      "order": 2,
+      "type": "place",
+      "label": "Places the composer lived and worked",
+      "text": "The composer spent nearly the whole of a short life in and around one imperial capital, frequently without a piano of his own, lodging with friends.",
+      "attribution": null
+    },
+    {
+      "order": 3,
+      "type": "biographical",
+      "label": "A biographical detail",
+      "text": "The composer wrote more than six hundred songs for voice and piano, yet heard almost none of his orchestral music performed in public during his lifetime.",
+      "attribution": null
+    },
+    {
+      "order": 4,
+      "type": "relationship",
+      "label": "A relationship with contemporaries",
+      "text": "The composer's circle of friends held regular evening gatherings devoted entirely to his music. The name coined for those evenings is still in use today.",
+      "attribution": null
+    },
+    {
+      "order": 5,
+      "type": "anecdote",
+      "label": "An anecdote",
+      "text": "The composer died the year after finishing this cycle, aged thirty-one, and was buried at his own request as close as possible to the older master whose funeral procession he had walked in as a torchbearer twenty months earlier.",
+      "attribution": null
+    }
+  ],
+  "explanation": {
+    "summary": "The song output, the circle of friends, and the Müller settings identify Franz Schubert, writing in Vienna in 1827.",
+    "points": [
+      { "clueOrder": 1, "text": "Twenty-four Müller settings on a winter journey identifies Winterreise, D. 911." },
+      { "clueOrder": 2, "text": "The capital is Vienna, where Schubert lived almost his entire life and where this cycle was written the year before his death." },
+      { "clueOrder": 3, "text": "Six hundred-odd lieder set against almost no public orchestral performance describes Schubert's position precisely." },
+      { "clueOrder": 4, "text": "Those evenings were the Schubertiades." },
+      { "clueOrder": 5, "text": "The older master is Beethoven, who died in Vienna in March 1827 with Schubert among the torchbearers; Schubert followed him in November 1828 and was buried nearby." }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+[
+  { "id": "bach-js",       "name": "Johann Sebastian Bach",    "era": "baroque" },
+  { "id": "mozart-wa",     "name": "Wolfgang Amadeus Mozart",  "era": "classical" },
+  { "id": "beethoven-l",   "name": "Ludwig van Beethoven",     "era": "classical" },
+  { "id": "schubert-f",    "name": "Franz Schubert",           "era": "romantic" },
+  { "id": "brahms-j",      "name": "Johannes Brahms",          "era": "romantic" },
+  { "id": "chopin-f",      "name": "Frédéric Chopin",          "era": "romantic" },
+  { "id": "tchaikovsky-p", "name": "Pyotr Ilyich Tchaikovsky", "era": "romantic" },
+  { "id": "debussy-c",     "name": "Claude Debussy",           "era": "modern" }
+]

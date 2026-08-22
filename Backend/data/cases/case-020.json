@@ -1,0 +1,57 @@
+{
+  "id": "case-020",
+  "caseNumber": 20,
+  "composerId": "mozart-wa",
+  "workTitle": "Symphony No. 41 in C major, K. 551",
+  "yearComposed": 1788,
+  "cityId": "vienna",
+  "instrumentationId": "orchestral",
+  "manuscript": "case-020.svg",
+  "clues": [
+    {
+      "order": 1,
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "The finale handles five distinct themes in invertible counterpoint, stacking them on top of one another in the closing bars.",
+      "attribution": null
+    },
+    {
+      "order": 2,
+      "type": "historical-event",
+      "label": "A historical event connected to the composer",
+      "text": "In 1781 the composer broke with his employer, an archbishop, and set up in the imperial capital as a freelance musician - an unusual and financially risky step for the period.",
+      "attribution": null
+    },
+    {
+      "order": 3,
+      "type": "place",
+      "label": "Places the composer lived and worked",
+      "text": "Born in a prince-archbishop's town on the Salzach, the composer spent his last decade in the imperial capital and died there in 1791, aged thirty-five. This work belongs to that final decade.",
+      "attribution": null
+    },
+    {
+      "order": 4,
+      "type": "biographical",
+      "label": "A biographical detail",
+      "text": "The composer was exhibited across Europe as a child prodigy by his father, playing for aristocratic courts before the age of ten.",
+      "attribution": null
+    },
+    {
+      "order": 5,
+      "type": "anecdote",
+      "label": "An anecdote",
+      "text": "Three years after this work the composer died leaving a Requiem unfinished. It had been commissioned through an intermediary by a patron who refused to give his name, and the composer is said to have come to believe he was writing it for himself. He was buried in a common grave outside the city walls.",
+      "attribution": null
+    }
+  ],
+  "explanation": {
+    "summary": "A Salzburg prodigy who went freelance in Vienna, and a finale that stacks five themes at once: Wolfgang Amadeus Mozart, Vienna, 1788.",
+    "points": [
+      { "clueOrder": 1, "text": "A finale combining five themes in invertible counterpoint is the \"Jupiter\" Symphony, K. 551." },
+      { "clueOrder": 2, "text": "The 1781 break with Archbishop Colloredo marks the move from Salzburg to Vienna." },
+      { "clueOrder": 3, "text": "The town on the Salzach is Salzburg — the birthplace, but not the answer here. The last three symphonies were written in Vienna in the summer of 1788." },
+      { "clueOrder": 4, "text": "The scale and duration of the childhood tours, managed by his father Leopold, are unique to Mozart." },
+      { "clueOrder": 5, "text": "The anonymous commission came from Count Franz von Walsegg. Mozart died in Vienna in December 1791 with the Requiem incomplete." }
+    ]
+  }
+}
