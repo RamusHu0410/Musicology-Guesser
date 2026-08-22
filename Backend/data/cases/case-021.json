@@ -12,46 +12,46 @@
       "order": 1,
       "type": "musical-characteristic",
       "label": "A musical characteristic",
-      "text": "The cycle sets twenty-four poems by Wilhelm Müller, following a rejected traveller out into a winter landscape.",
+      "text": "Twenty-four songs, all poems by Wilhelm Müller. A man who's been turned down walks out into winter and just keeps going.",
       "attribution": null
     },
     {
       "order": 2,
       "type": "place",
       "label": "Places the composer lived and worked",
-      "text": "The composer spent nearly the whole of a short life in and around one imperial capital, frequently without a piano of his own, lodging with friends.",
+      "text": "Almost his whole short life happened in and around one imperial capital. He often didn't even have his own piano — he crashed with friends.",
       "attribution": null
     },
     {
       "order": 3,
       "type": "biographical",
       "label": "A biographical detail",
-      "text": "The composer wrote more than six hundred songs for voice and piano, yet heard almost none of his orchestral music performed in public during his lifetime.",
+      "text": "More than six hundred songs for voice and piano. Almost none of his orchestral music got a public performance while he was alive.",
       "attribution": null
     },
     {
       "order": 4,
       "type": "relationship",
       "label": "A relationship with contemporaries",
-      "text": "The composer's circle of friends held regular evening gatherings devoted entirely to his music. The name coined for those evenings is still in use today.",
+      "text": "His friends ran regular evening hangouts that were just his music, start to finish. People still use the name they coined for those nights.",
       "attribution": null
     },
     {
       "order": 5,
       "type": "anecdote",
       "label": "An anecdote",
-      "text": "The composer died the year after finishing this cycle, aged thirty-one, and was buried at his own request as close as possible to the older master whose funeral procession he had walked in as a torchbearer twenty months earlier.",
+      "text": "Six hundred songs. Dead at thirty-one. And he left a symphony that just... stops after two movements. People still call it the Unfinished. He asked to be buried next to the older deaf master whose funeral he'd walked in as a torchbearer.",
       "attribution": null
     }
   ],
   "explanation": {
-    "summary": "The song output, the circle of friends, and the Müller settings identify Franz Schubert, writing in Austria in 1827.",
+    "summary": "The huge song output, the circle of friends, and Müller's winter wanderer: Franz Schubert, writing in Austria in 1827.",
     "points": [
-      { "clueOrder": 1, "text": "Twenty-four Müller settings on a winter journey identifies Winterreise, D. 911." },
-      { "clueOrder": 2, "text": "The capital is Vienna, where Schubert lived almost his entire life and where this cycle was written the year before his death." },
-      { "clueOrder": 3, "text": "Six hundred-odd lieder set against almost no public orchestral performance describes Schubert's position precisely." },
+      { "clueOrder": 1, "text": "Twenty-four Müller poems about a winter journey — that's Winterreise, D. 911." },
+      { "clueOrder": 2, "text": "The capital is Vienna. Schubert barely left it, and he wrote this cycle there the year before he died." },
+      { "clueOrder": 3, "text": "Six hundred-odd lieder, almost no public orchestral performances. That imbalance is Schubert's career in one line." },
       { "clueOrder": 4, "text": "Those evenings were the Schubertiades." },
-      { "clueOrder": 5, "text": "The older master is Beethoven, who died in Vienna in March 1827 with Schubert among the torchbearers; Schubert followed him in November 1828 and was buried nearby." }
+      { "clueOrder": 5, "text": "The Unfinished Symphony, death at thirty-one, buried beside Beethoven. Schubert was a torchbearer at that funeral in March 1827 and followed him in November 1828." }
     ]
   }
 }

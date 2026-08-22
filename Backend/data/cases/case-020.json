@@ -12,46 +12,46 @@
       "order": 1,
       "type": "musical-characteristic",
       "label": "A musical characteristic",
-      "text": "The finale handles five distinct themes in invertible counterpoint, stacking them on top of one another in the closing bars.",
+      "text": "The finale juggles five different themes in invertible counterpoint — and in the last bars he stacks all five on top of each other.",
       "attribution": null
     },
     {
       "order": 2,
       "type": "historical-event",
       "label": "A historical event connected to the composer",
-      "text": "In 1781 the composer broke with his employer, an archbishop, and set up in the imperial capital as a freelance musician - an unusual and financially risky step for the period.",
+      "text": "In 1781 he walked out on his boss, an archbishop, and tried to make it as a freelancer in the imperial capital. Bold move. Also a good way to go broke.",
       "attribution": null
     },
     {
       "order": 3,
       "type": "place",
       "label": "Places the composer lived and worked",
-      "text": "Born in a prince-archbishop's town on the Salzach, the composer spent his last decade in the imperial capital and died there in 1791, aged thirty-five. This work belongs to that final decade.",
+      "text": "Born in a prince-archbishop's town on the Salzach. Last ten years in the imperial capital; dead there in 1791, age thirty-five. This piece is from those last years.",
       "attribution": null
     },
     {
       "order": 4,
       "type": "biographical",
       "label": "A biographical detail",
-      "text": "The composer was exhibited across Europe as a child prodigy by his father, playing for aristocratic courts before the age of ten.",
+      "text": "His father hauled him around Europe as a kid, showing him off at courts before he was even ten.",
       "attribution": null
     },
     {
       "order": 5,
       "type": "anecdote",
       "label": "An anecdote",
-      "text": "Three years after this work the composer died leaving a Requiem unfinished. It had been commissioned through an intermediary by a patron who refused to give his name, and the composer is said to have come to believe he was writing it for himself. He was buried in a common grave outside the city walls.",
+      "text": "He was the child genius. He died at thirty-five leaving a Requiem unfinished — a mysterious patron, a grave outside the city walls, the whole legend. And that little night-music serenade they play at every wedding? Also him.",
       "attribution": null
     }
   ],
   "explanation": {
     "summary": "A Salzburg prodigy who went freelance in Vienna, and a finale that stacks five themes at once: Wolfgang Amadeus Mozart, writing in Austria in 1788.",
     "points": [
-      { "clueOrder": 1, "text": "A finale combining five themes in invertible counterpoint is the \"Jupiter\" Symphony, K. 551." },
-      { "clueOrder": 2, "text": "The 1781 break with Archbishop Colloredo marks the move from Salzburg to Vienna." },
-      { "clueOrder": 3, "text": "The town on the Salzach is Salzburg — the birthplace, but not the answer here. The last three symphonies were written in Vienna in the summer of 1788." },
-      { "clueOrder": 4, "text": "The scale and duration of the childhood tours, managed by his father Leopold, are unique to Mozart." },
-      { "clueOrder": 5, "text": "The anonymous commission came from Count Franz von Walsegg. Mozart died in Vienna in December 1791 with the Requiem incomplete." }
+      { "clueOrder": 1, "text": "Five themes stacked in invertible counterpoint at the end — that's the \"Jupiter\" Symphony, K. 551." },
+      { "clueOrder": 2, "text": "Walking out on Archbishop Colloredo in 1781 is the move from Salzburg to Vienna." },
+      { "clueOrder": 3, "text": "The town on the Salzach is Salzburg — his birthplace, not the answer here. The last three symphonies were written in Vienna in the summer of 1788." },
+      { "clueOrder": 4, "text": "Those childhood tours, run by his father Leopold, are on a scale nobody else matches." },
+      { "clueOrder": 5, "text": "The Requiem, the common grave, and Eine kleine Nachtmusik. The anonymous commission came from Count Franz von Walsegg. Mozart died in Vienna in December 1791." }
     ]
   }
 }

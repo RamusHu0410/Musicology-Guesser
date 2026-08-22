@@ -1,0 +1,57 @@
+{
+  "id": "case-023",
+  "caseNumber": 23,
+  "composerId": "ravel-m",
+  "workTitle": "Sonatine",
+  "yearComposed": 1905,
+  "countryId": "france",
+  "instrumentationId": "solo-piano",
+  "manuscript": "case-023.svg",
+  "clues": [
+    {
+      "order": 1,
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "Short first movement, classical shape: first theme, second theme, then both come back. A lot of it is just two voices tossing lines at each other. The chords are precise — modal, never foggy — and when the opening tune returns the bass sits on one note.",
+      "attribution": null
+    },
+    {
+      "order": 2,
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "Three short movements for piano. A moderate opener, a minuet in the middle, and a finale that barely stops for breath. Fast — and it has to stay light.",
+      "attribution": null
+    },
+    {
+      "order": 3,
+      "type": "anecdote",
+      "label": "An anecdote",
+      "text": "A magazine put up a prize for a first movement of seventy-five bars or fewer. He entered. Pretty much nobody else did. Then they threw him out for going over. He wrote the other two movements two years later anyway.",
+      "attribution": null
+    },
+    {
+      "order": 4,
+      "type": "historical-event",
+      "label": "A historical event connected to the composer",
+      "text": "1905: already thirty, already published, and he still gets knocked out in the first round of his country's big Rome prize. The fuss is so loud the head of the Conservatoire has to resign.",
+      "attribution": null
+    },
+    {
+      "order": 5,
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "If you know one piece of his, it's the one with the snare drum that gets louder for fifteen minutes and never changes the tune. They play it at every pops concert. He got sick of hearing it.",
+      "attribution": null
+    }
+  ],
+  "explanation": {
+    "summary": "The seventy-five-bar prize, the 1905 scandal, and that stubborn ostinato: Maurice Ravel, writing the Sonatine in France and finishing it in 1905.",
+    "points": [
+      { "clueOrder": 1, "text": "Those two-voice textures and the held bass under the returning tune are the first movement of the Sonatine." },
+      { "clueOrder": 2, "text": "Modéré, Mouvement de menuet, Animé — that's the three-movement plan." },
+      { "clueOrder": 3, "text": "The prize came from the Weekly Critical Review in 1903. Ravel's first movement was too long. He finished the other two in 1905." },
+      { "clueOrder": 4, "text": "The Affaire Ravel of 1905. After they cut him from the Prix de Rome, the noise was loud enough that Théodore Dubois resigned as head of the Conservatoire and Fauré took over." },
+      { "clueOrder": 5, "text": "That's Boléro (1928). Ravel got tired of how popular it was and once called it a piece for orchestra without music." }
+    ]
+  }
+}

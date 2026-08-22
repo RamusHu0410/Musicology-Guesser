@@ -12,21 +12,21 @@
       "order": 1,
       "type": "musical-characteristic",
       "label": "A musical characteristic",
-      "text": "A single repeated note persists through almost the entire piece, passing between the hands as the music darkens into the minor and then returns.",
+      "text": "One note just keeps tapping through almost the whole piece, hopping from hand to hand. The music slips into the minor, gets darker, then finds its way home.",
       "attribution": null
     },
     {
       "order": 2,
       "type": "place",
       "label": "A place the composer worked",
-      "text": "The winter of 1838-39 was spent in an abandoned charterhouse on a Mediterranean island. The rain was relentless, the composer's health collapsed, the locals shunned the household as consumptives, and the piano shipped from the mainland sat in customs for weeks.",
+      "text": "Winter 1838-39: a half-abandoned monastery on a Mediterranean island. Non-stop rain. The composer is getting sicker. The neighbors won't come near — they think the house has consumption. And the piano they shipped over sits in customs for weeks.",
       "attribution": null
     },
     {
       "order": 3,
       "type": "biographical",
       "label": "A biographical detail",
-      "text": "Born near Warsaw in 1810, the composer left his native country at the age of twenty and never returned. He settled in a foreign capital and made his living largely from teaching and playing in private salons rather than from public concerts.",
+      "text": "Born near Warsaw in 1810. Left home at twenty and never went back. In a foreign capital he made his living teaching and playing in salons, almost never in big public concerts.",
       "attribution": null
     },
     {
@@ -40,12 +40,12 @@
       "order": 5,
       "type": "relationship",
       "label": "A relationship with a contemporary",
-      "text": "Through these years the composer shared a household with the novelist who published under the name George Sand. It was she who arranged the journey south for the sake of his lungs, and she who later published an account of that disastrous winter.",
+      "text": "He was living with the novelist who published as George Sand — she planned this disastrous winter trip. And after he died, they took his heart back to Warsaw and sealed it in a church pillar. If you know one piano composer, it's this guy.",
       "attribution": null
     }
   ],
   "explanation": {
-    "summary": "The evidence converges on Frédéric Chopin (Fryderyk), writing in Spain at the charterhouse of Valldemossa on Mallorca in the winter of 1838-39.",
+    "summary": "Rain, a sick winter on an island, and George Sand: Frédéric Chopin (Fryderyk), writing in Spain at the charterhouse of Valldemossa on Mallorca, 1838-39.",
     "points": [
       {
         "clueOrder": null,
@@ -53,19 +53,19 @@
       },
       {
         "clueOrder": 1,
-        "text": "The insistent repeated A-flat, reheard as G-sharp in the minor section, is the feature that earned the piece its \"Raindrop\" nickname."
+        "text": "That stubborn repeated A-flat — which turns into G-sharp when the piece goes minor — is why people still call this the \"Raindrop\" prelude."
       },
       {
         "clueOrder": 2,
-        "text": "The island is Mallorca and the charterhouse is at Valldemossa, where the Op. 28 Preludes were finished. Note that the work is Spanish only by accident of the composer's health."
+        "text": "The island is Mallorca and the monastery is Valldemossa, where he finished the Op. 28 Preludes. Spain is the answer only because his health dragged him there."
       },
       {
         "clueOrder": 3,
-        "text": "A birth near Warsaw followed by a permanent move to Paris fixes the composer's nationality, even though this particular piece was written far from either."
+        "text": "Warsaw, then a one-way trip to Paris. That's his story — even though this particular piece was written far from both."
       },
       {
         "clueOrder": 5,
-        "text": "George Sand is the decisive link: only one composer of this period kept that household, and her Un hiver à Majorque describes the very winter in which this prelude was written."
+        "text": "George Sand plus the heart in the Warsaw pillar. That's Chopin, and her Un hiver à Majorque is literally this winter."
       }
     ]
   }

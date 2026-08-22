@@ -1,0 +1,57 @@
+{
+  "id": "case-024",
+  "caseNumber": 24,
+  "composerId": "brahms-j",
+  "workTitle": "Symphony No. 4 in E minor, Op. 98",
+  "yearComposed": 1885,
+  "countryId": "austria",
+  "instrumentationId": "orchestral",
+  "manuscript": "case-024.svg",
+  "clues": [
+    {
+      "order": 1,
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "The last movement is a passacaglia: one eight-bar bass line, thirty-odd variations, and it never lets go. E minor. It does not cheer up at the end.",
+      "attribution": null
+    },
+    {
+      "order": 2,
+      "type": "place",
+      "label": "Places the composer lived and worked",
+      "text": "Born in a northern port. The real career happened in the imperial capital further south — same city the older deaf composer had owned a generation earlier. He wrote this one on a summer stay in the mountains nearby.",
+      "attribution": null
+    },
+    {
+      "order": 3,
+      "type": "relationship",
+      "label": "A relationship with a contemporary",
+      "text": "He was close with Clara Schumann for decades — letters, visits, a lot left unsaid. He never married. The beard arrived later and then never left.",
+      "attribution": null
+    },
+    {
+      "order": 4,
+      "type": "biographical",
+      "label": "A biographical detail",
+      "text": "It took him twenty years to dare a first symphony. People joked it was really symphony number ten — the missing one after the deaf composer's ninth. He also wrote a big requiem in his own language, not Latin, after his mother died.",
+      "attribution": null
+    },
+    {
+      "order": 5,
+      "type": "anecdote",
+      "label": "An anecdote",
+      "text": "That lullaby. You know the one. Every music box, every cartoon, every tired parent. Plus the beard, plus the first symphony they called the deaf guy's tenth. If you have been to a concert, you have heard him.",
+      "attribution": null
+    }
+  ],
+  "explanation": {
+    "summary": "The passacaglia finale, Clara Schumann, and that lullaby: Johannes Brahms, writing Symphony No. 4 in Austria in 1885.",
+    "points": [
+      { "clueOrder": 1, "text": "A passacaglia last movement on an eight-bar bass is the finale of Symphony No. 4 in E minor. He spent the summer of 1885 on it in Mürzzuschlag." },
+      { "clueOrder": 2, "text": "The port is Hamburg. The capital is Vienna, where Brahms lived from the 1860s on. Austria is the answer because this symphony was written there, not because he was born there." },
+      { "clueOrder": 3, "text": "Clara Schumann was the relationship of his life. He destroyed a lot of the letters. He never married." },
+      { "clueOrder": 4, "text": "Symphony No. 1 (1876) was the one people nicknamed Beethoven's Tenth. The requiem is Ein deutsches Requiem, written after his mother's death." },
+      { "clueOrder": 5, "text": "The lullaby is the Wiegenlied, Op. 49 No. 4. If that plus the beard does not get you there, the concert hall will." }
+    ]
+  }
+}
