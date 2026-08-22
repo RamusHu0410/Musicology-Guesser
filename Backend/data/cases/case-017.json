@@ -1,0 +1,72 @@
+{
+  "id": "case-017",
+  "caseNumber": 17,
+  "composerId": "chopin-f",
+  "workTitle": "Prelude in D-flat major, Op. 28 No. 15",
+  "yearComposed": 1839,
+  "cityId": "valldemossa",
+  "instrumentationId": "solo-piano",
+  "manuscript": "case-017.svg",
+  "clues": [
+    {
+      "order": 1,
+      "type": "place",
+      "label": "A place the composer worked",
+      "text": "The winter of 1838-39 was spent in an abandoned charterhouse on a Mediterranean island. The rain was relentless, the composer's health collapsed, the locals shunned the household as consumptives, and the piano shipped from the mainland sat in customs for weeks.",
+      "attribution": null
+    },
+    {
+      "order": 2,
+      "type": "biographical",
+      "label": "A biographical detail",
+      "text": "Born near Warsaw in 1810, the composer left Poland at the age of twenty and never returned. He settled in France and made his living largely from teaching and playing in private salons rather than from public concerts.",
+      "attribution": null
+    },
+    {
+      "order": 3,
+      "type": "relationship",
+      "label": "A relationship with a contemporary",
+      "text": "Through these years the composer shared a household with the novelist who published under the name George Sand; it was she who arranged the journey south for the sake of his lungs.",
+      "attribution": null
+    },
+    {
+      "order": 4,
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "A single repeated note persists through almost the entire piece, passing between the hands as the music darkens into the minor and then returns.",
+      "attribution": null
+    },
+    {
+      "order": 5,
+      "type": "contemporary-account",
+      "label": "A first-hand description from a contemporary",
+      "text": "[PLACEHOLDER] A sourced first-hand account of this composer's playing belongs here. Replace with a properly cited quotation before the demo - see Backend/README.md.",
+      "attribution": "[PLACEHOLDER - needs citation]"
+    }
+  ],
+  "explanation": {
+    "summary": "The evidence converges on Fryderyk Chopin, working at the charterhouse of Valldemossa on Mallorca in the winter of 1838-39.",
+    "points": [
+      {
+        "clueOrder": null,
+        "text": "[PLACEHOLDER] Commentary on the manuscript hand goes here once a real autograph scan replaces the placeholder image."
+      },
+      {
+        "clueOrder": 1,
+        "text": "The island is Mallorca and the charterhouse is at Valldemossa, where the Op. 28 Preludes were finished. Note that the work is Spanish only by accident of the composer's health."
+      },
+      {
+        "clueOrder": 2,
+        "text": "A birth near Warsaw followed by a permanent move to Paris fixes the composer's nationality, even though this particular piece was written far from either."
+      },
+      {
+        "clueOrder": 3,
+        "text": "George Sand is the decisive link: she took the household to Mallorca and later published her own account of that winter."
+      },
+      {
+        "clueOrder": 4,
+        "text": "The insistent repeated A-flat, reheard as G-sharp in the minor section, is the feature that earned the piece its \"Raindrop\" nickname."
+      }
+    ]
+  }
+}

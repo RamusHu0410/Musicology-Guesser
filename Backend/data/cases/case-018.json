@@ -1,0 +1,49 @@
+{
+  "id": "case-018",
+  "caseNumber": 18,
+  "composerId": "bach-js",
+  "workTitle": "Das wohltemperirte Clavier, Book I",
+  "yearComposed": 1722,
+  "cityId": "kothen",
+  "instrumentationId": "solo-piano",
+  "manuscript": "case-018.svg",
+  "clues": [
+    {
+      "order": 1,
+      "type": "biographical",
+      "label": "A biographical detail",
+      "text": "At the time of writing the composer was Kapellmeister to a young prince at a small court whose Reformed worship had no use for elaborate church music. He turned instead to instrumental and keyboard writing, much of it for teaching.",
+      "attribution": null
+    },
+    {
+      "order": 2,
+      "type": "place",
+      "label": "Places the composer lived and worked",
+      "text": "Almost the whole of the composer's working life was spent within a small radius of towns in central Germany. He never travelled outside German-speaking lands.",
+      "attribution": null
+    },
+    {
+      "order": 3,
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "The collection works systematically through all twenty-four major and minor keys, pairing a free piece with a strict contrapuntal one in each.",
+      "attribution": null
+    },
+    {
+      "order": 4,
+      "type": "anecdote",
+      "label": "An anecdote",
+      "text": "As a young man the composer walked several hundred kilometres to hear a celebrated organist play, then overstayed his approved leave by months and was reprimanded on his return.",
+      "attribution": null
+    }
+  ],
+  "explanation": {
+    "summary": "A Reformed princely court, a career confined to central Germany, and a systematic tour of all twenty-four keys: Johann Sebastian Bach at Köthen.",
+    "points": [
+      { "clueOrder": 1, "text": "The court is Köthen, where Bach served Prince Leopold from 1717 to 1723. The dated title page of Book I places it there in 1722 — a common trap, since the more famous Leipzig years began only the following year." },
+      { "clueOrder": 2, "text": "A career confined to central Germany, with no foreign travel, is unusual among major Baroque composers and characteristic of Bach." },
+      { "clueOrder": 3, "text": "The systematic tour of all twenty-four keys, prelude paired with fugue, is the organising idea of Das wohltemperirte Clavier." },
+      { "clueOrder": 4, "text": "The long walk was to Lübeck, to hear Dieterich Buxtehude." }
+    ]
+  }
+}

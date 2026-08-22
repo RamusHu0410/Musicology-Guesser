@@ -1,0 +1,20 @@
+[
+  { "id": "vienna",           "name": "Vienna",           "country": "Austria",        "lat": 48.2082, "lon": 16.3738 },
+  { "id": "salzburg",         "name": "Salzburg",         "country": "Austria",        "lat": 47.8095, "lon": 13.0550 },
+  { "id": "leipzig",          "name": "Leipzig",          "country": "Germany",        "lat": 51.3397, "lon": 12.3731 },
+  { "id": "kothen",           "name": "Köthen",           "country": "Germany",        "lat": 51.7519, "lon": 11.9700 },
+  { "id": "weimar",           "name": "Weimar",           "country": "Germany",        "lat": 50.9795, "lon": 11.3235 },
+  { "id": "bonn",             "name": "Bonn",             "country": "Germany",        "lat": 50.7374, "lon": 7.0982 },
+  { "id": "hamburg",          "name": "Hamburg",          "country": "Germany",        "lat": 53.5511, "lon": 9.9937 },
+  { "id": "berlin",           "name": "Berlin",           "country": "Germany",        "lat": 52.5200, "lon": 13.4050 },
+  { "id": "paris",            "name": "Paris",            "country": "France",         "lat": 48.8566, "lon": 2.3522 },
+  { "id": "valldemossa",      "name": "Valldemossa",      "country": "Spain",          "lat": 39.7097, "lon": 2.6225 },
+  { "id": "london",           "name": "London",           "country": "United Kingdom", "lat": 51.5074, "lon": -0.1278 },
+  { "id": "warsaw",           "name": "Warsaw",           "country": "Poland",         "lat": 52.2297, "lon": 21.0122 },
+  { "id": "prague",           "name": "Prague",           "country": "Czechia",        "lat": 50.0755, "lon": 14.4378 },
+  { "id": "budapest",         "name": "Budapest",         "country": "Hungary",        "lat": 47.4979, "lon": 19.0402 },
+  { "id": "venice",           "name": "Venice",           "country": "Italy",          "lat": 45.4408, "lon": 12.3155 },
+  { "id": "rome",             "name": "Rome",             "country": "Italy",          "lat": 41.9028, "lon": 12.4964 },
+  { "id": "saint-petersburg", "name": "Saint Petersburg", "country": "Russia",         "lat": 59.9311, "lon": 30.3609 },
+  { "id": "moscow",           "name": "Moscow",           "country": "Russia",         "lat": 55.7558, "lon": 37.6173 }
+]

@@ -17,22 +17,29 @@ List of all composers the game can ask about — used to power the composer sear
 
 ```json
 [
-  { "id": "bach-js", "name": "Johann Sebastian Bach", "era": "baroque", "regionId": "central-europe" },
-  { "id": "chopin-f", "name": "Frédéric Chopin", "era": "romantic", "regionId": "eastern-europe" }
+  { "id": "bach-js", "name": "Johann Sebastian Bach", "era": "baroque" },
+  { "id": "chopin-f", "name": "Frédéric Chopin", "era": "romantic" }
 ]
 ```
 
-`era` and `regionId` here describe **the composer, not the individual work**, and they are the
-authoritative answer key for those two scoring axes. A Chopin prelude written in Mallorca still
-scores as `eastern-europe`, because the player is being asked to identify a composer.
+Composers carry no location. The location axis is about **where the individual work was written**,
+which belongs to the case rather than the composer — see `GET /api/cities` below.
 
-### `GET /api/regions`
+### `GET /api/cities`
+The places a work could have been written, used to power the location guess. Replaces the earlier
+`GET /api/regions`: regions were too coarse to be interesting when nearly every composer in the
+catalogue is European.
+
 ```json
 [
-  { "id": "central-europe", "name": "Central Europe" },
-  { "id": "eastern-europe", "name": "Eastern Europe" }
+  { "id": "vienna", "name": "Vienna", "country": "Austria", "lat": 48.2082, "lon": 16.3738 },
+  { "id": "valldemossa", "name": "Valldemossa", "country": "Spain", "lat": 39.7097, "lon": 2.6225 }
 ]
 ```
+
+Coordinates are included so the list can be rendered on a map. Scoring is currently exact match on
+`cityId`; the coordinates mean we can switch to GeoGuessr-style distance scoring later without
+changing the data or the request shape.
 
 ### `GET /api/instrumentation-categories`
 ```json
@@ -115,7 +122,7 @@ Request:
 {
   "composerId": "chopin-f",
   "guessedYear": 1840,
-  "regionId": "eastern-europe",
+  "cityId": "valldemossa",
   "instrumentationId": "solo-piano"
 }
 ```
@@ -127,14 +134,15 @@ Response:
     "composerName": "Frédéric Chopin",
     "workTitle": "Prelude in D-flat major, Op. 28 No. 15",
     "era": "romantic",
-    "yearComposed": 1838,
-    "regionId": "eastern-europe",
+    "yearComposed": 1839,
+    "cityId": "valldemossa",
+    "cityName": "Valldemossa",
     "instrumentationId": "solo-piano"
   },
   "scoreBreakdown": {
     "composer": { "points": 500, "maxPoints": 500, "correct": true },
     "era": { "points": 480, "maxPoints": 500, "correct": true, "yearsOff": 2 },
-    "region": { "points": 500, "maxPoints": 500, "correct": true },
+    "city": { "points": 500, "maxPoints": 500, "correct": true },
     "instrumentation": { "points": 500, "maxPoints": 500, "correct": true }
   },
   "roundScore": 1980,
@@ -155,8 +163,10 @@ Notes:
   via `clueId` so the UI can show the reasoning next to the evidence it came from; `clueId` is
   `null` for points about the manuscript image itself.
 - `workTitle` is what the excerpt actually is, for the reveal screen.
-- `era` and `regionId` in `correct` describe the composer (see §1). `yearComposed` is the year of
-  this particular work, and is what `guessedYear` is scored against.
+- `era` describes the composer. `yearComposed` and `cityId` describe **this work**: where and when
+  it was written. Chopin's Op. 28 No. 15 scores as Valldemossa, because that is where he wrote it,
+  even though he was Polish and lived in Paris.
+- `cityName` is included alongside `cityId` so the reveal screen does not have to look it up.
 - **Backend owns scoring**, not the frontend. This keeps scoring consistent/tamper-resistant and
   lets scoring rules evolve without a frontend redeploy. Frontend just renders whatever breakdown
   comes back.
@@ -203,15 +213,22 @@ rather than the status code.
   survive a backend restart.
 - **Excerpt images are pre-cropped offline** and served as static backend assets. No runtime PDF
   rendering. Sources are public-domain (IMSLP).
-- **Region and era are composer-level**, not work-level (see §1).
+- **Location is the city where the work was written**, not the composer's region. Regions were
+  dropped: every composer in the catalogue is European, so a region guess was close to free.
+- **Year scoring is `500 − (10 × yearsOff)`**, floored at 0, matching the worked example above.
+  `correct` on that axis means within 5 years. Composer, city and instrumentation are
+  all-or-nothing.
+- **There is no database.** Content is a folder of JSON files; sessions are in memory.
 
 ## Open questions for backend
 
-- Exact scoring curve for `guessedYear`. Working assumption unless told otherwise: full 500 within
-  ±5 years, decaying to 0 at ±100 years. Composer/region/instrumentation are all-or-nothing.
+- Should the city axis move to true GeoGuessr scoring — a map pin scored by kilometres from the
+  real location — instead of exact match on a city from the list? The cities already carry
+  coordinates, so the data is ready; it would change `cityId` in the guess request to a lat/lon
+  pair, which is why it needs agreeing first.
 - `difficulty` on `/game/start` has no defined effect yet — backend accepts and ignores it.
 - Should `/summary` also return each round's correct composer, for an end-of-game recap screen?
   It currently returns scores only.
 - Some works resist a single `instrumentationId` (is a piano concerto `solo-piano` or
-  `orchestral`?). Backend will pick one canonical category per work; flag if the UI needs to
-  accept either.
+  `orchestral`?). Backend picks one canonical category per work; flag if the UI needs to accept
+  either.
