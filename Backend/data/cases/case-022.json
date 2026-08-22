@@ -2,24 +2,24 @@
   "id": "case-022",
   "caseNumber": 22,
   "composerId": "debussy-c",
-  "workTitle": "Préludes, Book I",
-  "yearComposed": 1910,
+  "workTitle": "Reflets dans l'eau",
+  "yearComposed": 1905,
   "countryId": "france",
   "instrumentationId": "solo-piano",
-  "manuscript": "case-022.svg",
+  "manuscript": "case-022.png",
   "clues": [
     {
       "order": 1,
       "type": "musical-characteristic",
       "label": "A musical characteristic",
-      "text": "The harmony doesn't play by the old rules. Instead of the usual chord progressions you get whole-tone scales, modal colors, and parallel chords that old-school counterpoint would have thrown out of the room.",
+      "text": "Piano music that is trying to be water. Big quiet chords drop like a pebble, then the surface breaks into ripples — pentatonic figures, whole-tone haze, parallel chords sliding around instead of resolving.",
       "attribution": null
     },
     {
       "order": 2,
-      "type": "anecdote",
-      "label": "An anecdote",
-      "text": "In this set the title of each piece is printed at the end, not the top. You play the music first. The name comes after.",
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "It's the first piece in a 1905 piano set. The other two are a slow tribute to an old claveciniste and a running, almost toccata-like movement.",
       "attribution": null
     },
     {
@@ -45,13 +45,28 @@
     }
   ],
   "explanation": {
-    "summary": "The Conservatoire, the 1889 gamelan, and those floating chords: Claude Debussy, working in France in 1910.",
+    "summary": "Water on the piano, the 1889 gamelan, and Clair de lune: Claude Debussy, writing Reflets dans l'eau in France in 1905.",
     "points": [
-      { "clueOrder": 1, "text": "Whole-tone writing and those sliding parallel chords are Debussy's harmonic fingerprint." },
-      { "clueOrder": 2, "text": "Titles printed at the end of each piece — that's a trademark of the Préludes." },
-      { "clueOrder": 3, "text": "The Exposition was the Paris one of 1889, for the centenary of the Revolution. The gamelan stuck with him." },
-      { "clueOrder": 4, "text": "The Conservatoire is the one in Paris, and the Prix de Rome is the official stamp of the French system — even if he couldn't wait to leave Italy." },
-      { "clueOrder": 5, "text": "Clair de lune and Prélude à l'après-midi d'un faune. If you know two Debussy pieces, it's these." }
+      {
+        "clueOrder": 1,
+        "text": "Those pebble-chords and rippling pentatonic figures are the opening of Reflets dans l'eau, the first piece of Images, Book I."
+      },
+      {
+        "clueOrder": 2,
+        "text": "The set is Images: Reflets dans l'eau, Hommage à Rameau, then Mouvement."
+      },
+      {
+        "clueOrder": 3,
+        "text": "The Exposition was the Paris one of 1889, for the centenary of the Revolution. The gamelan stuck with him."
+      },
+      {
+        "clueOrder": 4,
+        "text": "The Conservatoire is the one in Paris, and the Prix de Rome is the official stamp of the French system — even if he couldn't wait to leave Italy."
+      },
+      {
+        "clueOrder": 5,
+        "text": "Clair de lune and Prélude à l'après-midi d'un faune. If you know two Debussy pieces, it's these."
+      }
     ]
   }
 }

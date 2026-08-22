@@ -41,12 +41,12 @@ data/
 ├── cases/
 │   └── case-017.json                     one file per mystery: clues, answer, explanation
 └── manuscripts/
-    └── case-017.svg                      the only directory exposed over HTTP
+    └── case-017.png                      the only directory exposed over HTTP
 ```
 
 The split matters: `/media/**` serves the `manuscripts` folder and nothing else, so no URL can
 reach a case file and read the answers out of it. Filenames are deliberately opaque
-(`case-017.svg`) so the image URL gives nothing away either.
+(`case-017.png`) so the image URL gives nothing away either.
 
 Everything is validated when it loads — unknown composer or instrumentation ids, duplicate clue
 orders, explanations pointing at clues that do not exist, missing manuscript files, unknown JSON

@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280" width="640" height="280" role="img" aria-label="Placeholder manuscript excerpt">
-  <rect width="640" height="280" fill="#f4ecd8"/>
-  <g stroke="#3a3226" stroke-width="1.2" opacity="0.75">
-    <path d="M60 70h520M60 82h520M60 94h520M60 106h520M60 118h520"/>
-    <path d="M60 180h520M60 192h520M60 204h520M60 216h520M60 228h520"/>
-  </g>
-  <text x="60" y="40" font-family="Georgia, 'Times New Roman', serif" font-size="18" fill="#3a3226" letter-spacing="3">CASE #023</text>
-  <text x="60" y="258" font-family="Georgia, 'Times New Roman', serif" font-size="13" fill="#6b6152" font-style="italic">Placeholder excerpt  replace with a cropped public-domain manuscript scan</text>
-</svg>

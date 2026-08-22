@@ -2,24 +2,24 @@
   "id": "case-025",
   "caseNumber": 25,
   "composerId": "tchaikovsky-p",
-  "workTitle": "Symphony No. 6 in B minor, Op. 74",
-  "yearComposed": 1893,
+  "workTitle": "The Nutcracker, Op. 71",
+  "yearComposed": 1892,
   "countryId": "russia",
   "instrumentationId": "orchestral",
-  "manuscript": "case-025.svg",
+  "manuscript": "case-025.png",
   "clues": [
     {
       "order": 1,
       "type": "musical-characteristic",
       "label": "A musical characteristic",
-      "text": "Last symphony, B minor. It does not end with a bang — the finale is a long, sinking Adagio that just fades. He conducted the premiere himself. Nine days later he was dead.",
+      "text": "A Christmas ballet: toys come alive, kids battle mice, then the whole second act is sweets in a fairy kingdom. One famous dance uses a brand-new instrument — the celesta — so it sounds like little bells.",
       "attribution": null
     },
     {
       "order": 2,
       "type": "place",
       "label": "Places the composer lived and worked",
-      "text": "Born in a factory town in a huge empire to the east. Split his working life between two capitals — one old, one built on a northern river — and wrote this last symphony at a quiet house outside the newer one.",
+      "text": "Born in a factory town in a huge empire to the east. Split his working life between two capitals — one old, one built on a northern river — and wrote this for the imperial theatre in the northern one.",
       "attribution": null
     },
     {
@@ -40,18 +40,18 @@
       "order": 5,
       "type": "anecdote",
       "label": "An anecdote",
-      "text": "Swan Lake. The Christmas ballet with the Sugar Plum Fairy. The 1812 Overture — the one with actual cannons. The piano concerto that opens with those huge chords. You have heard him. Everyone has heard him.",
+      "text": "The Dance of the Sugar Plum Fairy. The Waltz of the Flowers. Every December this ballet is on somewhere. Same composer as Swan Lake and the 1812 Overture with actual cannons. You have heard him. Everyone has heard him.",
       "attribution": null
     }
   ],
   "explanation": {
-    "summary": "The sinking last movement, the widow who never met him, and Swan Lake: Pyotr Ilyich Tchaikovsky, writing the Sixth Symphony in Russia in 1893.",
+    "summary": "Sugar Plum Fairy, Christmas ballet, and the widow who never met him: Pyotr Ilyich Tchaikovsky, writing The Nutcracker in Russia in 1892.",
     "points": [
-      { "clueOrder": 1, "text": "A symphony that dies away in a slow finale, premiered by the composer, who was dead within days — that's the Pathétique, October 1893." },
-      { "clueOrder": 2, "text": "The empire is Russia. The capitals are Moscow and St Petersburg. He wrote this one at his house in Klin." },
+      { "clueOrder": 1, "text": "Toys, mice, a kingdom of sweets, and the celesta: that's The Nutcracker, premiered at the Mariinsky in 1892." },
+      { "clueOrder": 2, "text": "The empire is Russia. The northern capital is St Petersburg, where the imperial ballet put it on." },
       { "clueOrder": 3, "text": "The widow is Nadezhda von Meck. Fourteen years of letters, zero meetings, then a sudden break in 1890." },
       { "clueOrder": 4, "text": "He taught at the Moscow Conservatory. The short marriage to Antonina Miliukova lasted weeks and went badly." },
-      { "clueOrder": 5, "text": "Swan Lake, The Nutcracker, the 1812 Overture, Piano Concerto No. 1. If you have been in a room with a speaker, you have heard Tchaikovsky." }
+      { "clueOrder": 5, "text": "Sugar Plum, Waltz of the Flowers, Swan Lake, the 1812 Overture. If you have been in a room with a speaker in December, you have heard Tchaikovsky." }
     ]
   }
 }

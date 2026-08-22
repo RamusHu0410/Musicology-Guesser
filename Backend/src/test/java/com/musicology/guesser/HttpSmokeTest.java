@@ -43,9 +43,10 @@ class HttpSmokeTest {
         assertThat(game.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(game.getBody()).contains("/media/");
 
-        ResponseEntity<String> image = restTemplate.getForEntity("/media/case-017.svg", String.class);
+        ResponseEntity<byte[]> image = restTemplate.getForEntity("/media/case-017.png", byte[].class);
         assertThat(image.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(image.getBody()).contains("<svg");
+        assertThat(image.getHeaders().getContentType()).isEqualTo(MediaType.IMAGE_PNG);
+        assertThat(image.getBody()).startsWith(new byte[] {(byte) 0x89, 0x50, 0x4E, 0x47});
     }
 
     /** Only manuscripts are exposed; case files carry the answers and live outside that directory. */

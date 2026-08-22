@@ -2,17 +2,17 @@
   "id": "case-021",
   "caseNumber": 21,
   "composerId": "schubert-f",
-  "workTitle": "Winterreise, D. 911",
-  "yearComposed": 1827,
+  "workTitle": "Ave Maria, D. 839",
+  "yearComposed": 1825,
   "countryId": "austria",
   "instrumentationId": "vocal-opera",
-  "manuscript": "case-021.svg",
+  "manuscript": "case-021.png",
   "clues": [
     {
       "order": 1,
       "type": "musical-characteristic",
       "label": "A musical characteristic",
-      "text": "Twenty-four songs, all poems by Wilhelm Müller. A man who's been turned down walks out into winter and just keeps going.",
+      "text": "A long, floating vocal line over piano arpeggios that sound like a harp. It feels like a prayer, even though the original words are a German setting of a Walter Scott poem — a girl named Ellen, in the Highlands, asking the Virgin for help.",
       "attribution": null
     },
     {
@@ -40,18 +40,18 @@
       "order": 5,
       "type": "anecdote",
       "label": "An anecdote",
-      "text": "Six hundred songs. Dead at thirty-one. And he left a symphony that just... stops after two movements. People still call it the Unfinished. He asked to be buried next to the older deaf master whose funeral he'd walked in as a torchbearer.",
+      "text": "This is the song everyone thinks is a church hymn. Weddings, funerals, talent shows — they all call it Ave Maria. Six hundred songs, dead at thirty-one, and a symphony that stops after two movements. People still call that one the Unfinished.",
       "attribution": null
     }
   ],
   "explanation": {
-    "summary": "The huge song output, the circle of friends, and Müller's winter wanderer: Franz Schubert, writing in Austria in 1827.",
+    "summary": "The prayer-song everyone already knows, six hundred lieder, and the Unfinished: Franz Schubert, writing Ave Maria in Austria in 1825.",
     "points": [
-      { "clueOrder": 1, "text": "Twenty-four Müller poems about a winter journey — that's Winterreise, D. 911." },
-      { "clueOrder": 2, "text": "The capital is Vienna. Schubert barely left it, and he wrote this cycle there the year before he died." },
+      { "clueOrder": 1, "text": "The Scott setting is Ellens dritter Gesang (Ellen's Third Song), D. 839. Later singers put the Latin Ave Maria under the same tune, which is how most people know it." },
+      { "clueOrder": 2, "text": "The capital is Vienna. Schubert barely left it, and he wrote this song there in 1825." },
       { "clueOrder": 3, "text": "Six hundred-odd lieder, almost no public orchestral performances. That imbalance is Schubert's career in one line." },
       { "clueOrder": 4, "text": "Those evenings were the Schubertiades." },
-      { "clueOrder": 5, "text": "The Unfinished Symphony, death at thirty-one, buried beside Beethoven. Schubert was a torchbearer at that funeral in March 1827 and followed him in November 1828." }
+      { "clueOrder": 5, "text": "Ave Maria plus the Unfinished Symphony plus death at thirty-one. He was a torchbearer at Beethoven's funeral in 1827 and followed him the next year." }
     ]
   }
 }
