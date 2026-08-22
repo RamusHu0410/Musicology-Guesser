@@ -17,23 +17,30 @@
     },
     {
       "order": 2,
+      "type": "anecdote",
+      "label": "An anecdote",
+      "text": "In this set the title of each piece is printed at the end rather than the top, so the player meets the music before its name.",
+      "attribution": null
+    },
+    {
+      "order": 3,
       "type": "historical-event",
       "label": "A historical event connected to the composer",
       "text": "At the Universal Exposition of 1889 the composer heard a Javanese gamelan ensemble for the first time, an encounter he was still referring to years afterwards.",
       "attribution": null
     },
     {
-      "order": 3,
+      "order": 4,
       "type": "biographical",
       "label": "A biographical detail",
       "text": "The composer trained at his country's national Conservatoire and won the Prix de Rome, though he disliked his residency in Italy and cut it short.",
       "attribution": null
     },
     {
-      "order": 4,
-      "type": "anecdote",
-      "label": "An anecdote",
-      "text": "In this set the title of each piece is printed at the end rather than the top, so the player meets the music before its name.",
+      "order": 5,
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "The same composer's best-known orchestral piece is a prelude on a Mallarmé poem about a faun's afternoon, and his most played piano piece is the movement named after moonlight in an early suite.",
       "attribution": null
     }
   ],
@@ -41,9 +48,10 @@
     "summary": "French Conservatoire training, the 1889 gamelan encounter, and non-functional harmony point to Claude Debussy, working in Paris in 1910.",
     "points": [
       { "clueOrder": 1, "text": "Whole-tone writing and planing parallel chords are the harmonic signature of Debussy." },
-      { "clueOrder": 2, "text": "The Exposition was the Paris one of 1889, held for the centenary of the Revolution; the gamelan left its mark on his later textures." },
-      { "clueOrder": 3, "text": "The national Conservatoire is the Paris Conservatoire, and the Prix de Rome places him inside the French institutional tradition." },
-      { "clueOrder": 4, "text": "Titles printed at the end of each piece is a distinctive feature of the Préludes." }
+      { "clueOrder": 2, "text": "Titles printed at the end of each piece is a distinctive feature of the Préludes." },
+      { "clueOrder": 3, "text": "The Exposition was the Paris one of 1889, held for the centenary of the Revolution; the gamelan left its mark on his later textures." },
+      { "clueOrder": 4, "text": "The national Conservatoire is the Paris Conservatoire, and the Prix de Rome places him inside the French institutional tradition." },
+      { "clueOrder": 5, "text": "Prélude à l'après-midi d'un faune (1894) and Clair de lune from the Suite bergamasque are the two pieces almost every listener knows." }
     ]
   }
 }

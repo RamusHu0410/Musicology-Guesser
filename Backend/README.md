@@ -84,12 +84,17 @@ changes and no rebuild of the jar.
 `type` is one of `contemporary-account`, `letter`, `criticism`, `biographical`, `place`,
 `relationship`, `musical-characteristic`, `historical-event`, `anecdote`.
 
-Two rules when writing content:
+Three rules when writing content:
 
 1. **Clue text must never name the composer or the answer city.** Clues are sent to the client
    before any guess is submitted, so anything in them is public. Say "an imperial capital" rather
    than "Vienna", and let the reveal name it. Tests enforce both.
-2. **Do not invent historical quotations.** Rows needing a real first-hand account are marked
+2. **Five clues per case, ordered from cryptic to obvious.** The player unlocks them one at a time,
+   so `order` is a difficulty ramp: clue 1 should be solvable only by someone who already knows the
+   repertoire, and clue 5 should end the guessing for anyone with a general music education — the
+   heart sealed in a Warsaw pillar, the deaf composer turned round to see the applause. Rule 1 still
+   applies to clue 5.
+3. **Do not invent historical quotations.** Rows needing a real first-hand account are marked
    `[PLACEHOLDER]` and must be replaced with a properly cited quotation rather than filled in from
    memory. Case 017 currently carries two such placeholders (one clue, one explanation point).
 
@@ -103,11 +108,17 @@ them with cropped public-domain scans (IMSLP) and update the `manuscript` filena
 | `DATA_DIR` | `data` | Location of the content folder |
 | `MEDIA_BASE_URL` | `http://localhost:8080` | Prefix for `imageUrl`; set to empty for relative URLs |
 | `CORS_ORIGINS` | localhost 5173/3000 | Comma-separated browser origins allowed to call the API |
+| `SESSION_TTL` | `2h` | How long a session stays playable before it is evicted |
+| `MAX_SESSIONS` | `500` | Ceiling on sessions held in memory; oldest are dropped first |
+
+`MEDIA_BASE_URL` matters on deploy: `imageUrl` is absolute, so a server left on the default will
+hand a deployed frontend URLs pointing at the developer's own machine.
 
 ## Endpoints
 
 | Method | Path |
 | --- | --- |
+| GET | `/api/health` |
 | GET | `/api/composers` |
 | GET | `/api/cities` |
 | GET | `/api/instrumentation-categories` |
@@ -136,16 +147,28 @@ the guess request shape, not to the content.
 ```
 
 Tests read the same `data` folder the app serves, so a broken case file fails the build. Coverage
-is deliberately narrow: reference data, session start, the scoring curve, answer-leak prevention,
-double-guess rejection, not-found handling, request validation, and content-file linting.
+is deliberately narrow: reference data, session start, the scoring curve, session expiry and
+eviction, answer-leak prevention, double-guess rejection, the shape of every error response,
+deployment config, and content-file linting.
+
+### Playing a real game against a running server
+
+```bash
+./mvnw spring-boot:run          # in one terminal
+python3 scripts/playthrough.py  # in another
+```
+
+Starts a session, guesses every round, and checks the summary and that no answer appeared before
+its guess. Takes `--base-url`, `--rounds` and `--difficulty`. Standard library only.
 
 ## Notes for the frontend
 
-- Sessions are in-memory and anonymous. A backend restart invalidates every in-flight session.
+- Sessions are in-memory and anonymous. A backend restart invalidates every in-flight session, and
+  so does leaving one idle past `SESSION_TTL`; both surface as `SESSION_NOT_FOUND`.
 - `difficulty` on `/api/game/start` is accepted and ignored.
-- `roundCount` above the number of cases is capped rather than rejected, so `maxScore` in the
-  summary reflects the rounds actually dealt.
-- `/api/game/{sessionId}/summary` lists only rounds that have been guessed; `maxScore` covers the
-  whole session.
-- Unmatched URLs return `404` with `{"error":"NOT_FOUND"}`, which is one code beyond the list in
-  the contract.
+- `roundCount` above the number of cases is capped rather than rejected, so read the length of
+  `rounds` rather than assuming you got what you asked for.
+- `/api/game/{sessionId}/summary` lists only rounds that have been guessed, and now includes each
+  round's `caseNumber`, `composerName` and `workTitle` for the recap screen. `maxScore` still
+  covers the whole session.
+- Unmatched URLs return `404` with `{"error":"NOT_FOUND"}`.

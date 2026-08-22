@@ -6,10 +6,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -18,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicology.guesser.config.AppProperties;
 import com.musicology.guesser.model.City;
@@ -52,9 +55,11 @@ public class ContentRepository {
         Path dataDir = Path.of(properties.dataDir()).toAbsolutePath().normalize();
         requireDirectory(dataDir, "data directory");
 
-        // A dedicated mapper, left at Jackson's strict defaults, so a typo in a content file fails
-        // loudly instead of silently deserialising to null.
-        ObjectMapper mapper = new ObjectMapper();
+        // Unknown fields and missing primitives must fail startup. A typo in a case file should
+        // not become yearComposed=0 and a silently unsolvable round.
+        ObjectMapper mapper = new ObjectMapper()
+                .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
 
         this.composers = readList(mapper, dataDir.resolve("reference/composers.json"), new TypeReference<>() {});
         this.cities = readList(mapper, dataDir.resolve("reference/cities.json"), new TypeReference<>() {});
@@ -178,8 +183,21 @@ public class ContentRepository {
         Path manuscriptDir = dataDir.resolve("manuscripts");
         requireDirectory(manuscriptDir, "manuscripts directory");
 
+        Set<Integer> caseNumbers = new HashSet<>();
         for (MysteryCase mysteryCase : cases) {
             String where = "Case " + mysteryCase.id();
+            requireText(where + " id", mysteryCase.id());
+            requireText(where + " workTitle", mysteryCase.workTitle());
+            requireText(where + " composerId", mysteryCase.composerId());
+            requireText(where + " cityId", mysteryCase.cityId());
+            requireText(where + " instrumentationId", mysteryCase.instrumentationId());
+            if (mysteryCase.yearComposed() < 1000 || mysteryCase.yearComposed() > 2100) {
+                throw new IllegalStateException(
+                        where + " has an implausible yearComposed " + mysteryCase.yearComposed());
+            }
+            if (!caseNumbers.add(mysteryCase.caseNumber())) {
+                throw new IllegalStateException(where + " reuses caseNumber " + mysteryCase.caseNumber());
+            }
 
             if (!composersById.containsKey(mysteryCase.composerId())) {
                 throw new IllegalStateException(
@@ -222,18 +240,36 @@ public class ContentRepository {
         if (orders.stream().anyMatch(order -> order < 1)) {
             throw new IllegalStateException(where + " has a clue with a non-positive order");
         }
+        for (Clue clue : clues) {
+            requireText(where + " clue " + clue.order() + " type", clue.type());
+            requireText(where + " clue " + clue.order() + " label", clue.label());
+            requireText(where + " clue " + clue.order() + " text", clue.text());
+        }
     }
 
     private void validateExplanation(String where, MysteryCase mysteryCase) {
-        if (mysteryCase.explanation() == null || mysteryCase.explanation().summary() == null) {
-            throw new IllegalStateException(where + " has no explanation summary");
+        if (mysteryCase.explanation() == null) {
+            throw new IllegalStateException(where + " has no explanation");
+        }
+        requireText(where + " explanation summary", mysteryCase.explanation().summary());
+        if (mysteryCase.explanation().points() == null || mysteryCase.explanation().points().isEmpty()) {
+            throw new IllegalStateException(where + " has no explanation points");
         }
         List<Integer> clueOrders = mysteryCase.clues().stream().map(Clue::order).toList();
         for (ExplanationPoint point : mysteryCase.explanation().points()) {
+            if (point.text() == null || point.text().isBlank()) {
+                throw new IllegalStateException(where + " has a blank explanation point");
+            }
             if (point.clueOrder() != null && !clueOrders.contains(point.clueOrder())) {
                 throw new IllegalStateException(
                         where + " explanation references clue order " + point.clueOrder() + ", which does not exist");
             }
+        }
+    }
+
+    private static void requireText(String label, String value) {
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException("Missing " + label);
         }
     }
 

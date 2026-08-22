@@ -111,14 +111,28 @@ public class GameService {
 
         List<SummaryRoundDto> guessedRounds = session.getRounds().stream()
                 .filter(GameRound::isGuessed)
-                .map(round -> new SummaryRoundDto(
-                        round.getRoundId(), round.getRoundScore(), scoringService.maxRoundScore()))
+                .map(this::toSummaryRoundDto)
                 .toList();
 
         int totalScore = guessedRounds.stream().mapToInt(SummaryRoundDto::roundScore).sum();
         int maxScore = session.getRounds().size() * scoringService.maxRoundScore();
 
         return new SummaryResponse(session.getSessionId(), totalScore, maxScore, guessedRounds);
+    }
+
+    /** Only ever called for guessed rounds, so naming the answer here reveals nothing new. */
+    private SummaryRoundDto toSummaryRoundDto(GameRound round) {
+        MysteryCase mysteryCase = content.findCase(round.getCaseId())
+                .orElseThrow(() -> new ApiException(
+                        ApiErrorCode.INTERNAL_ERROR, "Case behind round " + round.getRoundId() + " is missing"));
+
+        return new SummaryRoundDto(
+                round.getRoundId(),
+                round.getRoundScore(),
+                scoringService.maxRoundScore(),
+                mysteryCase.caseNumber(),
+                content.requireComposer(mysteryCase.composerId()).name(),
+                mysteryCase.workTitle());
     }
 
     private GameSession requireSession(String sessionId) {
@@ -157,7 +171,11 @@ public class GameService {
     }
 
     private String manuscriptUrl(MysteryCase mysteryCase) {
-        return properties.mediaBaseUrl() + "/media/" + mysteryCase.manuscript();
+        String base = properties.mediaBaseUrl();
+        while (base.endsWith("/")) {
+            base = base.substring(0, base.length() - 1);
+        }
+        return base + "/media/" + mysteryCase.manuscript();
     }
 
     private CorrectAnswerDto toCorrectAnswerDto(MysteryCase mysteryCase) {

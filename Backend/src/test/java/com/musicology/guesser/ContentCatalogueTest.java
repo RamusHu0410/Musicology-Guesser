@@ -42,6 +42,9 @@ class ContentCatalogueTest {
                 assertThat(clue.text())
                         .as("clue %d of %s must not name %s", clue.order(), mysteryCase.id(), cityName)
                         .doesNotContain(cityName);
+                assertThat(clue.text())
+                        .as("clue %d of %s must not name the work", clue.order(), mysteryCase.id())
+                        .doesNotContain(mysteryCase.workTitle());
             }
         }
     }
@@ -63,17 +66,38 @@ class ContentCatalogueTest {
         }
     }
 
-    /** The reveal is where the player learns the place, so it should say it outright. */
+    /** The reveal is where the player learns who wrote it and where, so it should say both. */
     @Test
-    void everyExplanationNamesItsCity() {
+    void everyExplanationNamesItsCityAndComposer() {
         for (MysteryCase mysteryCase : content.findAllCases()) {
             String cityName = content.requireCity(mysteryCase.cityId()).name();
+            Composer composer = content.requireComposer(mysteryCase.composerId());
+            String surname = composer.name().substring(composer.name().lastIndexOf(' ') + 1);
             String reveal = mysteryCase.explanation().summary()
                     + mysteryCase.explanation().points().stream().map(point -> point.text()).reduce("", String::concat);
 
             assertThat(reveal)
                     .as("the reveal for %s should name %s", mysteryCase.id(), cityName)
                     .contains(cityName);
+            assertThat(reveal)
+                    .as("the reveal for %s should name %s", mysteryCase.id(), composer.name())
+                    .contains(surname);
+        }
+    }
+
+    /**
+     * Clues are unlocked one at a time, so every case needs the same number of them for the ramp
+     * from cryptic to obvious to mean anything.
+     */
+    @Test
+    void everyCaseOffersFiveClues() {
+        for (MysteryCase mysteryCase : content.findAllCases()) {
+            assertThat(mysteryCase.clues())
+                    .as("clue count for %s", mysteryCase.id())
+                    .hasSize(5);
+            assertThat(mysteryCase.clues().stream().map(Clue::order))
+                    .as("clue orders for %s", mysteryCase.id())
+                    .containsExactly(1, 2, 3, 4, 5);
         }
     }
 

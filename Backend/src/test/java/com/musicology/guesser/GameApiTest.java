@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicology.guesser.model.City;
 import com.musicology.guesser.model.Composer;
 import com.musicology.guesser.model.MysteryCase;
+import com.musicology.guesser.model.ReferenceItem;
 import com.musicology.guesser.repository.ContentRepository;
 
 @SpringBootTest
@@ -265,6 +267,75 @@ class GameApiTest {
                 .andExpect(jsonPath("$.rounds[0].roundScore").value(2000));
     }
 
+    /** A wrong guess on every axis still scores, and floors at zero rather than going negative. */
+    @Test
+    void anEntirelyWrongGuessScoresZero() throws Exception {
+        JsonNode game = startGame(1);
+        String sessionId = game.get("sessionId").asText();
+        MysteryCase answer = caseBehind(game.get("rounds").get(0));
+
+        String otherComposerId = otherThan(
+                answer.composerId(), content.findAllComposers().stream().map(Composer::id).toList());
+        String otherCityId =
+                otherThan(answer.cityId(), content.findAllCities().stream().map(City::id).toList());
+        String otherInstrumentationId = otherThan(
+                answer.instrumentationId(),
+                content.findAllInstrumentationCategories().stream().map(ReferenceItem::id).toList());
+
+        String body = """
+                {"composerId":"%s","guessedYear":%d,"cityId":"%s","instrumentationId":"%s"}
+                """
+                .formatted(otherComposerId, answer.yearComposed() - 500, otherCityId, otherInstrumentationId);
+
+        mockMvc.perform(post("/api/game/{s}/rounds/{r}/guess", sessionId, "r1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.scoreBreakdown.era.points").value(0))
+                .andExpect(jsonPath("$.roundScore").value(0));
+    }
+
+    /** The end screen needs to name what each round was, not just what it scored. */
+    @Test
+    void summaryRecapsTheAnswerToEachGuessedRound() throws Exception {
+        JsonNode game = startGame(2);
+        String sessionId = game.get("sessionId").asText();
+        MysteryCase answer = caseBehind(game.get("rounds").get(0));
+        Composer composer = content.requireComposer(answer.composerId());
+
+        mockMvc.perform(guess(sessionId, "r1", answer, answer.yearComposed()))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/game/{s}/summary", sessionId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.rounds[0].caseNumber").value(answer.caseNumber()))
+                .andExpect(jsonPath("$.rounds[0].composerName").value(composer.name()))
+                .andExpect(jsonPath("$.rounds[0].workTitle").value(answer.workTitle()))
+                .andExpect(jsonPath("$.rounds[0].maxRoundScore").value(2000));
+    }
+
+    /** An unguessed round must not appear, since that would reveal an answer still in play. */
+    @Test
+    void summaryOmitsRoundsThatAreStillInPlay() throws Exception {
+        JsonNode game = startGame(2);
+        String sessionId = game.get("sessionId").asText();
+        MysteryCase unguessed = caseBehind(game.get("rounds").get(1));
+
+        MysteryCase answer = caseBehind(game.get("rounds").get(0));
+        mockMvc.perform(guess(sessionId, "r1", answer, answer.yearComposed()))
+                .andExpect(status().isOk());
+
+        String payload = mockMvc.perform(get("/api/game/{s}/summary", sessionId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.rounds.length()").value(1))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(payload).doesNotContain(unguessed.workTitle());
+        assertThat(payload).doesNotContain(content.requireComposer(unguessed.composerId()).name());
+    }
+
     private JsonNode startGame(int roundCount) throws Exception {
         return objectMapper.readTree(startGameRaw(roundCount));
     }
@@ -278,6 +349,10 @@ class GameApiTest {
                 .getResponse()
                 .getContentAsByteArray();
         return new String(payload, StandardCharsets.UTF_8);
+    }
+
+    private static String otherThan(String excluded, List<String> candidates) {
+        return candidates.stream().filter(id -> !id.equals(excluded)).findFirst().orElseThrow();
     }
 
     private MysteryCase caseBehind(JsonNode round) {

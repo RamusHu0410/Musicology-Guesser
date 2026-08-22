@@ -10,6 +10,18 @@ later if accounts are needed).
 
 ---
 
+## 0. Health
+
+### `GET /api/health`
+```json
+{ "status": "ok", "cases": 6, "activeSessions": 3 }
+```
+For deployment checks and for sanity during a demo. The app refuses to start if the content
+catalogue is broken, so a `200` here already means the cases loaded. `cases` is also the ceiling on
+`roundCount`. No answer data is exposed.
+
+---
+
 ## 1. Reference data (fetched once per app load, rarely changes)
 
 ### `GET /api/composers`
@@ -108,6 +120,10 @@ Notes:
 - `label` is a short human-readable caption for the evidence card ("Evidence 02" numbering is
   frontend-owned, derived from `order`). `attribution` is optional (source/author/date).
 - `caseNumber` is cosmetic, for the "CASE #017" framing.
+- `difficulty` is accepted and ignored. Scoring does not change with it.
+- `roundCount` is capped at the number of cases in the catalogue. Asking for 20 when 6 exist
+  returns 6 rounds rather than an error, so read the length of `rounds` rather than assuming you
+  got what you asked for.
 - No answer data is included here — the composer is only revealed after a guess is submitted.
   Clue text must never name the composer, and `imageUrl` paths must be opaque (`/media/r1.png`,
   never `/chopin-nocturne-op9.png`).
@@ -172,6 +188,7 @@ Notes:
   comes back.
 - `era` scoring is distance-based (closer guessed year → more points, like GeoGuessr's map
   distance), hence `yearsOff` — useful for the reveal UI to show "off by N years."
+- `roundScore` is the sum of the four axes. Opening clues does not change the score.
 - Any field can be omitted from the guess request if we support partial guesses — TBD, default
   assumption is all four fields are required before submit is enabled.
 
@@ -186,10 +203,24 @@ Notes:
   "totalScore": 8420,
   "maxScore": 10000,
   "rounds": [
-    { "roundId": "r1", "roundScore": 1980, "maxRoundScore": 2000 }
+    {
+      "roundId": "r1",
+      "roundScore": 1980,
+      "maxRoundScore": 2000,
+      "caseNumber": 17,
+      "composerName": "Frédéric Chopin",
+      "workTitle": "Prelude in D-flat major, Op. 28 No. 15"
+    }
   ]
 }
 ```
+Notes:
+- `caseNumber`, `composerName` and `workTitle` are there so the end screen can recap what each
+  round actually was without re-fetching anything. They are safe to send because `rounds` only ever
+  contains rounds that have already been guessed, and the guess response already revealed them.
+- `rounds` lists **guessed rounds only**, so it can be shorter than the session. `maxScore` still
+  counts every round in the session, so abandoning a game shows as a shortfall rather than a
+  perfect score on one round.
 
 ---
 
@@ -199,9 +230,21 @@ Standard shape for all error responses:
 ```json
 { "error": "SESSION_NOT_FOUND", "message": "No session with id sess_abc123" }
 ```
-Expected codes: `SESSION_NOT_FOUND`, `ROUND_NOT_FOUND`, `ROUND_ALREADY_GUESSED`, `VALIDATION_ERROR`,
-mapped to HTTP 404, 404, 409 and 400 respectively. Frontend should key off the `error` string
-rather than the status code.
+Every error the backend can produce uses this shape, including ones Spring raises itself. Frontend
+should key off the `error` string rather than the status code.
+
+- `SESSION_NOT_FOUND` — 404. Also what an expired session returns; sessions are evicted after a
+  period of inactivity, so a game left open overnight comes back as if it never existed.
+- `ROUND_NOT_FOUND` — 404.
+- `ROUND_ALREADY_GUESSED` — 409. Rounds take exactly one guess.
+- `VALIDATION_ERROR` — 400. Missing or malformed fields, unparseable JSON, and ids that are
+  well-formed but not in the catalogue (an unknown `cityId`).
+- `NOT_FOUND` — 404. A URL that matches no endpoint or static file. Distinct from the two specific
+  404s above so a typo in a path is not mistaken for a missing session.
+- `INTERNAL_ERROR` — 500. Genuinely unexpected; the detail is logged server-side and the client
+  gets an opaque message rather than a stack trace.
+
+`message` is for developers, not end users. Do not render it in the UI.
 
 ---
 
@@ -219,6 +262,8 @@ rather than the status code.
   `correct` on that axis means within 5 years. Composer, city and instrumentation are
   all-or-nothing.
 - **There is no database.** Content is a folder of JSON files; sessions are in memory.
+- **`/summary` returns each round's composer and work title**, alongside the scores, for the
+  end-of-game recap. Additive: the original three fields are unchanged.
 - **The guess sends a `cityId`, scored as an exact match.** True GeoGuessr scoring — a map pin
   scored by kilometres from the real location — is deferred, not rejected. The cities already
   carry coordinates, so the data is ready if the frontend wants to move to a lat/lon pair later.
@@ -226,9 +271,7 @@ rather than the status code.
 
 ## Open questions for backend
 
-- `difficulty` on `/game/start` has no defined effect yet — backend accepts and ignores it.
-- Should `/summary` also return each round's correct composer, for an end-of-game recap screen?
-  It currently returns scores only.
+- `difficulty` on `/game/start` is accepted and ignored.
 - Some works resist a single `instrumentationId` (is a piano concerto `solo-piano` or
   `orchestral`?). Backend picks one canonical category per work; flag if the UI needs to accept
   either.
