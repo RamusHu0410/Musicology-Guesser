@@ -4,12 +4,15 @@ import { BookIcon } from '../../components/BookIcon'
 import { CollectionIcon } from '../../components/CollectionIcon'
 import { CollectionModal } from '../../components/CollectionModal'
 import { FieldGuideModal } from '../../components/FieldGuideModal'
+import { HelpIcon } from '../../components/HelpIcon'
 import { OrnamentDivider } from '../../components/OrnamentDivider'
 import { Triangle } from '../../components/Triangle'
+import { TutorialModal } from '../../components/TutorialModal'
 import { useGameStore } from '../../store/gameStore'
 import { useReferenceStore } from '../../store/referenceStore'
 
 const ROUND_OPTIONS = [3, 5, 8]
+const TUTORIAL_SEEN_KEY = 'musicology-guesser-tutorial-seen'
 
 const SECTIONS = [
   { id: 'guide', label: 'Field Guide' },
@@ -23,6 +26,11 @@ export function StartScreen() {
   const [sectionIndex, setSectionIndex] = useState(1)
   const [showFieldGuideModal, setShowFieldGuideModal] = useState(false)
   const [showCollectionModal, setShowCollectionModal] = useState(false)
+  const [showTutorial, setShowTutorial] = useState(() => {
+    const seen = localStorage.getItem(TUTORIAL_SEEN_KEY)
+    if (!seen) localStorage.setItem(TUTORIAL_SEEN_KEY, 'true')
+    return !seen
+  })
   const startGame = useGameStore((s) => s.startGame)
   const status = useGameStore((s) => s.status)
   const load = useReferenceStore((s) => s.load)
@@ -45,6 +53,14 @@ export function StartScreen() {
     <main className="mx-auto flex max-w-xl flex-col items-center gap-4 p-6 pt-16 text-center">
       <h1 className="text-5xl font-semibold tracking-wide text-ivory">Musicology Guesser</h1>
       <OrnamentDivider />
+      <button
+        type="button"
+        onClick={() => setShowTutorial(true)}
+        className="flex items-center gap-1.5 rounded-sm border border-gold/30 px-3 py-1 text-sm uppercase tracking-wide text-muted hover:border-gold/60 hover:text-ivory"
+      >
+        <HelpIcon className="h-4 w-4" />
+        How to Play
+      </button>
       <div className="w-full">
         <p className="mb-2 text-center text-base uppercase tracking-wide text-gold-soft">
           {SECTIONS[sectionIndex].label}
@@ -140,6 +156,7 @@ export function StartScreen() {
 
       {showFieldGuideModal && <FieldGuideModal onClose={() => setShowFieldGuideModal(false)} />}
       {showCollectionModal && <CollectionModal onClose={() => setShowCollectionModal(false)} />}
+      {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />}
     </main>
   )
 }
