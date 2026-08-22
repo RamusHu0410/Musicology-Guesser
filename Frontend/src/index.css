@@ -1,0 +1,62 @@
+@import 'tailwindcss';
+
+/* "Concert hall elegance": black & gold, marble-like surfaces, serif type. */
+@theme {
+  --color-ink: #0a0a0b;
+  --color-ink-elevated: #17171a;
+  --color-ink-soft: #1f1f23;
+  --color-gold: #c9a227;
+  --color-gold-soft: #e2c766;
+  --color-ivory: #efe9db;
+  --color-muted: #9a958a;
+  --color-maroon: #6e1f2a;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-ink);
+  background-image: radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.06), transparent 60%);
+  color: var(--color-ivory);
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+.marble-panel {
+  background-color: var(--color-ink-elevated);
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.035) 0%, transparent 45%),
+    linear-gradient(315deg, rgba(255, 255, 255, 0.02) 0%, transparent 60%);
+}
+
+input[type='range'].timeline-slider {
+  appearance: none;
+  background: transparent;
+  height: 16px;
+}
+input[type='range'].timeline-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 20px;
+  border-radius: 2px;
+  background: var(--color-gold-soft);
+  border: 2px solid var(--color-ink);
+  cursor: pointer;
+}
+input[type='range'].timeline-slider::-moz-range-thumb {
+  width: 12px;
+  height: 20px;
+  border-radius: 2px;
+  background: var(--color-gold-soft);
+  border: 2px solid var(--color-ink);
+  cursor: pointer;
+}
+input[type='range'].timeline-slider::-moz-range-track {
+  background: transparent;
+}
