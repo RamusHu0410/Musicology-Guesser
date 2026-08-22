@@ -6,52 +6,52 @@
   "yearComposed": 1722,
   "countryId": "germany",
   "instrumentationId": "solo-piano",
-  "manuscript": "case-018.svg",
+  "manuscript": "case-018.png",
   "clues": [
     {
       "order": 1,
       "type": "musical-characteristic",
       "label": "A musical characteristic",
-      "text": "The collection works systematically through all twenty-four major and minor keys, pairing a free piece with a strict contrapuntal one in each.",
+      "text": "The collection walks through all twenty-four major and minor keys, no exceptions. In every key you get a free piece paired with a strict fugue.",
       "attribution": null
     },
     {
       "order": 2,
       "type": "place",
       "label": "Places the composer lived and worked",
-      "text": "Almost the whole of the composer's working life was spent within a small radius of towns in the centre of the German-speaking lands. He never travelled outside that language area.",
+      "text": "Almost his whole working life happened in a handful of towns in the middle of the German-speaking lands. He never left that language area. Not once.",
       "attribution": null
     },
     {
       "order": 3,
       "type": "biographical",
       "label": "A biographical detail",
-      "text": "At the time of writing the composer was Kapellmeister to a young prince at a small court whose Reformed worship had no use for elaborate church music. He turned instead to instrumental and keyboard writing, much of it for teaching.",
+      "text": "When he wrote this he was Kapellmeister for a young prince at a small court. The chapel there didn't want fancy church music, so he poured that energy into keyboard pieces — a lot of them for students.",
       "attribution": null
     },
     {
       "order": 4,
       "type": "anecdote",
       "label": "An anecdote",
-      "text": "As a young man the composer walked several hundred kilometres to hear a celebrated organist play, then overstayed his approved leave by months and was reprimanded on his return.",
+      "text": "As a young man he walked several hundred kilometres just to hear a famous organist, then stayed months past his leave and got chewed out when he finally came home.",
       "attribution": null
     },
     {
       "order": 5,
       "type": "anecdote",
       "label": "An anecdote",
-      "text": "The four letters of the composer's surname spell a melodic motif in German notation - B flat, A, C, B natural - which he wrote into the unfinished final fugue of his last work. He fathered twenty children across two marriages, and several sons became well-known composers in their own right.",
+      "text": "If you took piano lessons, you played his little two-part inventions. If you know one organ piece on earth, it's his toccata and fugue — the Halloween one. Twenty children. And the four letters of his last name are a tune in German notation: B-flat, A, C, B-natural.",
       "attribution": null
     }
   ],
   "explanation": {
-    "summary": "A Reformed princely court in Germany, a career confined to that language area, and a systematic tour of all twenty-four keys: Johann Sebastian Bach at Köthen.",
+    "summary": "A small court in Germany, a man who never left the German-speaking world, and a tour of all twenty-four keys: Johann Sebastian Bach, writing at Köthen.",
     "points": [
-      { "clueOrder": 1, "text": "The systematic tour of all twenty-four keys, prelude paired with fugue, is the organising idea of Das wohltemperirte Clavier." },
-      { "clueOrder": 2, "text": "A career confined to central Germany, with no foreign travel, is unusual among major Baroque composers and characteristic of Bach." },
-      { "clueOrder": 3, "text": "The court is Köthen, where Bach served Prince Leopold from 1717 to 1723. The dated title page of Book I places it there in 1722 — a common trap, since the more famous Leipzig years began only the following year." },
+      { "clueOrder": 1, "text": "Prelude plus fugue, one pair in every key — that's the whole idea of Das wohltemperirte Clavier." },
+      { "clueOrder": 2, "text": "A career stuck in central Germany, with zero foreign travel, is unusual for a big Baroque name. That's Bach." },
+      { "clueOrder": 3, "text": "The court is Köthen. Bach worked for Prince Leopold from 1717 to 1723, and Book I is dated 1722. Easy trap: the famous Leipzig years start the next year." },
       { "clueOrder": 4, "text": "The long walk was to Lübeck, to hear Dieterich Buxtehude." },
-      { "clueOrder": 5, "text": "In German notation B natural is written H, so B flat–A–C–B natural spells BACH. He used the motif as a subject in Die Kunst der Fuge, left incomplete at his death." }
+      { "clueOrder": 5, "text": "Inventions, the D-minor toccata, twenty kids, and B-flat–A–C–B-natural. In German notation B-natural is H, so that motif spells BACH." }
     ]
   }
 }

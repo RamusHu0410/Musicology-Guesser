@@ -6,5 +6,6 @@
   { "id": "brahms-j",      "name": "Johannes Brahms",          "era": "romantic" },
   { "id": "chopin-f",      "name": "Frédéric Chopin",          "era": "romantic" },
   { "id": "tchaikovsky-p", "name": "Pyotr Ilyich Tchaikovsky", "era": "romantic" },
-  { "id": "debussy-c",     "name": "Claude Debussy",           "era": "modern" }
+  { "id": "debussy-c",     "name": "Claude Debussy",           "era": "modern" },
+  { "id": "ravel-m",       "name": "Maurice Ravel",            "era": "modern" }
 ]

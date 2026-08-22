@@ -2,56 +2,71 @@
   "id": "case-022",
   "caseNumber": 22,
   "composerId": "debussy-c",
-  "workTitle": "Préludes, Book I",
-  "yearComposed": 1910,
+  "workTitle": "Reflets dans l'eau",
+  "yearComposed": 1905,
   "countryId": "france",
   "instrumentationId": "solo-piano",
-  "manuscript": "case-022.svg",
+  "manuscript": "case-022.png",
   "clues": [
     {
       "order": 1,
       "type": "musical-characteristic",
       "label": "A musical characteristic",
-      "text": "The music largely sidesteps functional harmony, moving instead through whole-tone and modal collections and parallel chords that earlier counterpoint would have forbidden outright.",
+      "text": "Piano music that is trying to be water. Big quiet chords drop like a pebble, then the surface breaks into ripples — pentatonic figures, whole-tone haze, parallel chords sliding around instead of resolving.",
       "attribution": null
     },
     {
       "order": 2,
-      "type": "anecdote",
-      "label": "An anecdote",
-      "text": "In this set the title of each piece is printed at the end rather than the top, so the player meets the music before its name.",
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "It's the first piece in a 1905 piano set. The other two are a slow tribute to an old claveciniste and a running, almost toccata-like movement.",
       "attribution": null
     },
     {
       "order": 3,
       "type": "historical-event",
       "label": "A historical event connected to the composer",
-      "text": "At the Universal Exposition of 1889 the composer heard a Javanese gamelan ensemble for the first time, an encounter he was still referring to years afterwards.",
+      "text": "At the Universal Exposition of 1889 he heard a Javanese gamelan for the first time — and he was still talking about it years later.",
       "attribution": null
     },
     {
       "order": 4,
       "type": "biographical",
       "label": "A biographical detail",
-      "text": "The composer trained at his country's national Conservatoire and won the Prix de Rome, though he disliked his residency in Italy and cut it short.",
+      "text": "He trained at his country's Conservatoire and won the Prix de Rome. Then he got to Italy, hated the residency, and left early.",
       "attribution": null
     },
     {
       "order": 5,
       "type": "musical-characteristic",
       "label": "A musical characteristic",
-      "text": "The same composer's best-known orchestral piece is a prelude on a Mallarmé poem about a faun's afternoon, and his most played piano piece is the movement named after moonlight in an early suite.",
+      "text": "His most famous piano piece is the moonlight one — Clair de lune. His most famous orchestra piece is about a faun's afternoon. If you have ever put on a 'relaxing classical' playlist, you have already heard him.",
       "attribution": null
     }
   ],
   "explanation": {
-    "summary": "Conservatoire training in France, the 1889 gamelan encounter, and non-functional harmony point to Claude Debussy, working in Paris in 1910.",
+    "summary": "Water on the piano, the 1889 gamelan, and Clair de lune: Claude Debussy, writing Reflets dans l'eau in France in 1905.",
     "points": [
-      { "clueOrder": 1, "text": "Whole-tone writing and planing parallel chords are the harmonic signature of Debussy." },
-      { "clueOrder": 2, "text": "Titles printed at the end of each piece is a distinctive feature of the Préludes." },
-      { "clueOrder": 3, "text": "The Exposition was the Paris one of 1889, held for the centenary of the Revolution; the gamelan left its mark on his later textures." },
-      { "clueOrder": 4, "text": "The national Conservatoire is the Paris Conservatoire, and the Prix de Rome places him inside the French institutional tradition." },
-      { "clueOrder": 5, "text": "Prélude à l'après-midi d'un faune (1894) and Clair de lune from the Suite bergamasque are the two pieces almost every listener knows." }
+      {
+        "clueOrder": 1,
+        "text": "Those pebble-chords and rippling pentatonic figures are the opening of Reflets dans l'eau, the first piece of Images, Book I."
+      },
+      {
+        "clueOrder": 2,
+        "text": "The set is Images: Reflets dans l'eau, Hommage à Rameau, then Mouvement."
+      },
+      {
+        "clueOrder": 3,
+        "text": "The Exposition was the Paris one of 1889, for the centenary of the Revolution. The gamelan stuck with him."
+      },
+      {
+        "clueOrder": 4,
+        "text": "The Conservatoire is the one in Paris, and the Prix de Rome is the official stamp of the French system — even if he couldn't wait to leave Italy."
+      },
+      {
+        "clueOrder": 5,
+        "text": "Clair de lune and Prélude à l'après-midi d'un faune. If you know two Debussy pieces, it's these."
+      }
     ]
   }
 }

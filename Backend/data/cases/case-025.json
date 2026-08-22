@@ -1,0 +1,57 @@
+{
+  "id": "case-025",
+  "caseNumber": 25,
+  "composerId": "tchaikovsky-p",
+  "workTitle": "The Nutcracker, Op. 71",
+  "yearComposed": 1892,
+  "countryId": "russia",
+  "instrumentationId": "orchestral",
+  "manuscript": "case-025.png",
+  "clues": [
+    {
+      "order": 1,
+      "type": "musical-characteristic",
+      "label": "A musical characteristic",
+      "text": "A Christmas ballet: toys come alive, kids battle mice, then the whole second act is sweets in a fairy kingdom. One famous dance uses a brand-new instrument — the celesta — so it sounds like little bells.",
+      "attribution": null
+    },
+    {
+      "order": 2,
+      "type": "place",
+      "label": "Places the composer lived and worked",
+      "text": "Born in a factory town in a huge empire to the east. Split his working life between two capitals — one old, one built on a northern river — and wrote this for the imperial theatre in the northern one.",
+      "attribution": null
+    },
+    {
+      "order": 3,
+      "type": "relationship",
+      "label": "A relationship with a contemporary",
+      "text": "A wealthy widow paid his bills for years. They wrote hundreds of letters and made a rule: they would never meet. When the money and the letters stopped, it wrecked him.",
+      "attribution": null
+    },
+    {
+      "order": 4,
+      "type": "biographical",
+      "label": "A biographical detail",
+      "text": "He taught at a new conservatory in the newer capital, toured as a celebrity conductor, and had one disastrous brief marriage. Critics at home often called the music too western. Audiences everywhere else could not get enough.",
+      "attribution": null
+    },
+    {
+      "order": 5,
+      "type": "anecdote",
+      "label": "An anecdote",
+      "text": "The Dance of the Sugar Plum Fairy. The Waltz of the Flowers. Every December this ballet is on somewhere. Same composer as Swan Lake and the 1812 Overture with actual cannons. You have heard him. Everyone has heard him.",
+      "attribution": null
+    }
+  ],
+  "explanation": {
+    "summary": "Sugar Plum Fairy, Christmas ballet, and the widow who never met him: Pyotr Ilyich Tchaikovsky, writing The Nutcracker in Russia in 1892.",
+    "points": [
+      { "clueOrder": 1, "text": "Toys, mice, a kingdom of sweets, and the celesta: that's The Nutcracker, premiered at the Mariinsky in 1892." },
+      { "clueOrder": 2, "text": "The empire is Russia. The northern capital is St Petersburg, where the imperial ballet put it on." },
+      { "clueOrder": 3, "text": "The widow is Nadezhda von Meck. Fourteen years of letters, zero meetings, then a sudden break in 1890." },
+      { "clueOrder": 4, "text": "He taught at the Moscow Conservatory. The short marriage to Antonina Miliukova lasted weeks and went badly." },
+      { "clueOrder": 5, "text": "Sugar Plum, Waltz of the Flowers, Swan Lake, the 1812 Overture. If you have been in a room with a speaker in December, you have heard Tchaikovsky." }
+    ]
+  }
+}
