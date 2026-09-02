@@ -1,0 +1,43 @@
+# Render blueprint for both halves of the app.
+#
+# The two services reference each other by URL, so they cannot be created in one pass from a
+# clean slate: deploy the backend first, then fill in the frontend's VITE_API_BASE_URL, then let
+# the backend's CORS_ORIGINS point back at the static site's URL.
+services:
+  - type: web
+    name: musicology-guesser
+    runtime: docker
+    plan: free
+    region: oregon
+    rootDir: Backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # Browser origins allowed to call the API. Must match the static site's URL exactly,
+      # scheme included and no trailing slash.
+      - key: CORS_ORIGINS
+        value: https://musicologyguesser.onrender.com
+      # Prefix stamped onto manuscript URLs (/media/**) handed to the frontend. Without this the
+      # frontend receives localhost URLs and every manuscript image 404s in the browser.
+      - key: MEDIA_BASE_URL
+        value: https://musicology-guesser.onrender.com
+
+  - type: web
+    name: musicologyguesser
+    runtime: static
+    rootDir: Frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    autoDeploy: true
+    envVars:
+      # Baked into the bundle at build time, not read at runtime — changing it requires a rebuild.
+      - key: VITE_API_BASE_URL
+        value: https://musicology-guesser.onrender.com
+    routes:
+      # React Router owns /play and /summary; without this fallback a hard refresh on a deep
+      # link 404s because no such file exists in dist/.
+      - type: rewrite
+        source: /*
+        destination: /index.html
