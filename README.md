@@ -1,7 +1,7 @@
 # Musicology-Guesser
 Guess the composer given part of the music piece
 
-Learn the story behind the score in https://musicology-guesser.vercel.app/
+Learn the story behind the score in https://musicologyguesser.onrender.com/ or https://musicology-guesser.vercel.app/
 (If the app is struggle to load, please move to https://musicology-guesser.onrender.com/ to activate the backend)
 
 # 3 Core Features
